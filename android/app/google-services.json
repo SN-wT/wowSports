@@ -1,0 +1,171 @@
+{
+  "project_info": {
+    "project_number": "965871970667",
+    "firebase_url": "https://flowhackathon-default-rtdb.firebaseio.com",
+    "project_id": "flowhackathon",
+    "storage_bucket": "flowhackathon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965871970667:android:a260d383c816dc0dea042e",
+        "android_client_info": {
+          "package_name": "com.example.flowhackathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965871970667-punsdkljqm1090jh1l5g4op7vng3tal6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flowhackathon",
+            "certificate_hash": "6db0841b2d4ec25c6acc6a0bf20207ba4cdd0c79"
+          }
+        },
+        {
+          "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMIOzNGSdRDjDpaZwyUTXc5hBV4NYh8y8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hackathon"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965871970667:android:c68ad9591f4d8986ea042e",
+        "android_client_info": {
+          "package_name": "com.example.flowhackathon2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMIOzNGSdRDjDpaZwyUTXc5hBV4NYh8y8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hackathon"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965871970667:android:2b34bc171c4863feea042e",
+        "android_client_info": {
+          "package_name": "com.example.hackathon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965871970667-vt29rqv6cfvdja44ls5ttv556o19po4n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hackathon",
+            "certificate_hash": "6db0841b2d4ec25c6acc6a0bf20207ba4cdd0c79"
+          }
+        },
+        {
+          "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMIOzNGSdRDjDpaZwyUTXc5hBV4NYh8y8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hackathon"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965871970667:android:34816d08cb180631ea042e",
+        "android_client_info": {
+          "package_name": "com.nft.wowsports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMIOzNGSdRDjDpaZwyUTXc5hBV4NYh8y8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hackathon"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
