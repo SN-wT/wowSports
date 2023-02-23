@@ -11,6 +11,8 @@ import 'package:wowsports/model/urls_model.dart';
 import 'package:wowsports/screens/settings_screen/model/marketplace_model/nftrequest.dart';
 import 'package:wowsports/screens/settings_screen/model/marketplace_model/nftresponse.dart';
 import 'package:wowsports/screens/settings_screen/model/nftclaim_model/nftclaim_model.dart';
+import 'package:wowsports/screens/wallet_screen/model/getnfts/get_bft_response_model.dart';
+import 'package:wowsports/screens/wallet_screen/model/getnfts/get_nft_model_request.dart';
 import 'package:wowsports/screens/wallet_screen/model/user_address_model/request.dart';
 import 'package:wowsports/screens/wallet_screen/model/user_address_model/response_model.dart';
 import 'package:wowsports/utils/base_cubit.dart';
@@ -34,6 +36,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
   NFTDataRequest nftDataRequest;
   UrlsModel urlsModel;
   List<NFTS> nftData = [];
+  GetNFTSModel getNFTSModel;
   NFTClaimModel nftClaimModel;
 
   void listenerreset(AuthenticationState state) {
@@ -104,8 +107,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
           valueNotifier = ValueNotifier(
               responseaddressis = event.snapshot.value.toString());
           debugPrint(
-              'the vaqlue notifier address is ${valueNotifier.value
-                  .toString()}');
+              'the vaqlue notifier address is ${valueNotifier.value.toString()}');
           await PreferenceHelper.saveAddress(responseaddressis.toString());
         } else {
           UserAddressResponse userAddressResponse;
@@ -113,8 +115,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
               UserAddressResponse.fromJson(
                   responseaddress.data as Map<String, dynamic>));
           debugPrint(
-              'the vaqlue notifier address is78 ${valueNotifier.value
-                  .toString()}');
+              'the vaqlue notifier address is78 ${valueNotifier.value.toString()}');
           await PreferenceHelper.saveAddress(valueNotifier.value.toString());
         }
       });
@@ -127,7 +128,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
       var address = addressevent.snapshot.value.toString();
       debugPrint('the address from db${address.toString()}');
       FlowClient flowClient =
-      FlowClient('access.devnet.nodes.onflow.org', 9000);
+          FlowClient('access.devnet.nodes.onflow.org', 9000);
 
       // var address = ('0x877931736ee77cff').toString();
       try {
@@ -153,7 +154,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
       await res.update({"email": email});
     } else {
       FlowClient flowClient =
-      FlowClient('access.devnet.nodes.onflow.org', 9000);
+          FlowClient('access.devnet.nodes.onflow.org', 9000);
       // var address = ('0x877931736ee77cff').toString();
       try {
         valueNotifier = ValueNotifier(
@@ -245,6 +246,34 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
       debugPrint(
           ' urlsandtokenssss values ${nftClaimModel.packname.toString()}');
     });
+  }
+
+  Future<GetNFTSModel> getYourNFTs({bool forceRefresh}) async {
+    debugPrint('comming inside');
+    var address = await PreferenceHelper.getToken();
+    GetNFTSRequest getNFTSRequest = GetNFTSRequest(address: address);
+    debugPrint('comming inside1');
+    if (urlsModel == null) {
+      await getMasterUrlsandtokens();
+    }
+    var response = (await Dio().post(urlsModel.getnfts,
+        options: Options(
+            headers: {"x-api-key": urlsModel.apikey},
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 500;
+            }),
+        data: getNFTSRequest.toJson()));
+    debugPrint('comming inside2');
+
+    getNFTSModel =
+        GetNFTSModel.fromJson(((response.data)) as Map<String, dynamic>);
+    List<Body> userNMFT = [];
+    userNMFT.addAll(getNFTSModel.body.toList());
+    debugPrint('comming inside3');
+
+    debugPrint('all nfts are ${userNMFT[0].utility.toString()}');
+    return getNFTSModel;
   }
 
   Future<NFTDataResponse> getUserNFTs({bool forceRefresh}) async {

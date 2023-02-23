@@ -4,6 +4,7 @@ import 'package:flow_dart_sdk/fcl/types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
+import 'package:wowsports/screens/pooling_screen/model/poll_detail_model.dart';
 import 'package:wowsports/screens/utility_screen/cubit/utility_screen_state.dart';
 import 'package:wowsports/utils/base_cubit.dart';
 
@@ -62,18 +63,33 @@ class UtilityScreenCubit extends BaseCubit<UtilityScreenState> {
   }
 
   getnfts() async {
+    if (authenticationCubit.urlsModel == null) {
+      await authenticationCubit.getMasterUrlsandtokens();
+    }
     var response = (await Dio().getUri(
       Uri.parse(
-        "https://0vr884hv5j.execute-api.us-east-1.amazonaws.com/user/getpolldetails",
+        authenticationCubit.urlsModel.getpollsdata,
       ),
       options: Options(
-          headers: {"x-api-key": authenticationCubit.nftClaimModel.apikey},
+          headers: {"x-api-key": authenticationCubit.urlsModel.apikey},
           followRedirects: false,
           validateStatus: (status) {
             return status < 500;
           }),
     ));
+    var responseMap = response.data as Map<String, dynamic>;
 
-    debugPrint("all replace all ${response.data}");
+    Map<String, PollDetail> pollsDetail = {};
+
+    responseMap.forEach((key, value) {
+      pollsDetail[key] = PollDetail.fromJson(value);
+    });
+
+    for (var element in pollsDetail.keys) {
+      debugPrint('key is $element');
+      debugPrint('choice A is  is ${pollsDetail[element].choiceA}');
+    }
+
+    debugPrint("all replace all ${pollsDetail.length}");
   }
 }

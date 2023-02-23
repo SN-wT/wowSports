@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/screens/wallet_screen/cubit/wallet_screen_state.dart';
+import 'package:wowsports/screens/wallet_screen/model/link_model/link_request.dart';
+import 'package:wowsports/screens/wallet_screen/model/link_model/link_response_model.dart';
 import 'package:wowsports/utils/base_cubit.dart';
 
 class WalletScreenCubit extends BaseCubit<WalletScreenState> {
   final AuthenticationCubitBloc authenticationCubit;
+
   WalletScreenCubit(this.authenticationCubit)
       : super(WalletScreenInitialState());
   Dio dio = Dio();
@@ -15,13 +20,8 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
   TextEditingController puplickeytextcontroller = TextEditingController();
   TextEditingController addresstcontroller = TextEditingController();
   var apikey;
-  var nftData = [
-    "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2FStephenCurry.PNG?alt=media&token=07b34c05-faf6-40c5-bb36-f62597fa7df2",
-    "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2FMsDhoni.png?alt=media&token=87fa8ebe-fbd5-44b9-9db8-656ade5a7163",
-    "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2Fadilrashidupdated.png?alt=media&token=e8133c26-9a94-416f-8c35-f80b83308e55",
-    "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2Flebronjames.png?alt=media&token=29f3f03d-7983-4cc5-aec4-f4207b9dd18c",
-    "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2FMsDhoni.png?alt=media&token=87fa8ebe-fbd5-44b9-9db8-656ade5a7163"
-  ];
+  LInkResponse lInkResponse;
+
   Future<void> init() async {
     emit(WalletScreenLoadingState());
 
@@ -53,6 +53,35 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
     debugPrint('the apikey is ${eventforapikey.snapshot.value.toString()}');
 
     emit(WalletScreenRefreshState());
+  }
+
+  linkkey() async {
+    if (authenticationCubit.urlsModel == null) {
+      await authenticationCubit.getMasterUrlsandtokens();
+    }
+    emit(WalletScreenLinkRequestState());
+    var uid = FirebaseAuth.instance.currentUser.uid;
+    LInkRequest lInkRequest = LInkRequest(
+      publicKey: puplickeytextcontroller.text.toString(),
+      userId: uid,
+    );
+    var response = await Dio().post(authenticationCubit.urlsModel.getnfts,
+        options: Options(
+            headers: {"x-api-key": authenticationCubit.urlsModel.apikey},
+            followRedirects: false,
+            validateStatus: (status) {
+              return status < 500;
+            }),
+        data: lInkRequest.toJson());
+
+    lInkResponse = LInkResponse.fromJson(
+        jsonDecode(jsonEncode(response.data as Map<String, dynamic>)));
+    var linkresponse = lInkResponse.body.toString();
+    debugPrint("the link response ${linkresponse.toString()}");
+    emit(WalletScreenLinkedState());
+    if (linkresponse == "publicKey added successfully") {
+      emit(WalletScreenLinkrefreshState());
+    }
   }
 /*
   addressRequest() async {
