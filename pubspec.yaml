@@ -70,6 +70,7 @@ dependencies:
   enum_to_string: ^2.0.1
   json_annotation: ^4.8.0
   syncfusion_flutter_charts: ^20.4.51
+  polls: ^1.0.1
 
 dependency_overrides:
   fluttertoast: 8.1.2

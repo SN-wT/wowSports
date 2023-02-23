@@ -125,7 +125,9 @@ class UtilityScreens extends StatelessWidget {
                       height: 30,
                     ),
                     AppButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        await cubit.getnfts();
+                      },
                       child: const Text(
                         'Face Filter',
                         style: TextStyle(color: AppColorResource.Color_FFF),

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flow_dart_sdk/fcl/fcl.dart';
 import 'package:flow_dart_sdk/fcl/types.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,7 @@ import 'package:wowsports/utils/base_cubit.dart';
 class UtilityScreenCubit extends BaseCubit<UtilityScreenState> {
   final AuthenticationCubitBloc authenticationCubit;
   static const platform = MethodChannel("com.wowt.flowhackathon/aractivity");
+  var getnft;
 
   UtilityScreenCubit(this.authenticationCubit)
       : super(UtilityScreenInitialState());
@@ -38,11 +40,12 @@ class UtilityScreenCubit extends BaseCubit<UtilityScreenState> {
     var response = await flowClient.executeScript(code);
 
     flowClient.decodeResponse(response);
-    ;
+
     final decoded = flowClient.decodeResponse(response);
-    var cadencedecode = CadenceValue.fromJson(decoded);
-    debugPrint('cadencedecode ${cadencedecode.toJson()}');
-    debugPrint('$decoded');
+    var cadencedecode = CadenceValue.fromJson(decoded).toJsonString();
+
+    debugPrint('cadencedecode ${cadencedecode}');
+    // debugPrint('$decoded');
     debugPrint('${decoded["value"][0]}');
 
     /*
@@ -56,5 +59,21 @@ class UtilityScreenCubit extends BaseCubit<UtilityScreenState> {
 
     debugPrint("✅ Done${abc}");
     */
+  }
+
+  getnfts() async {
+    var response = (await Dio().getUri(
+      Uri.parse(
+        "https://0vr884hv5j.execute-api.us-east-1.amazonaws.com/user/getpolldetails",
+      ),
+      options: Options(
+          headers: {"x-api-key": authenticationCubit.nftClaimModel.apikey},
+          followRedirects: false,
+          validateStatus: (status) {
+            return status < 500;
+          }),
+    ));
+
+    debugPrint("all replace all ${response.data}");
   }
 }

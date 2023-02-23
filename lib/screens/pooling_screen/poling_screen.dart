@@ -44,24 +44,105 @@ class _LayOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double option1 = 1.0;
+    double option2 = 0.0;
+    double option3 = 1.0;
+    double option4 = 1.0;
     final cubit = context.read<PolingScreenCubit>();
 
     final cubitAuth = context.read<AuthenticationCubitBloc>();
 
     return BlocBuilder<PolingScreenCubit, PolingScreenState>(
       bloc: cubit,
-      builder: (context, state) => (cubit.state is PolingScreenLoadingState ||
-              cubit.state is PolingScreenPoleRequestedState)
+      builder: (context, state) =>
+      (cubit.state is PolingScreenLoadingState ||
+          cubit.state is PolingScreenPoleRequestedState)
           ? const Center(
-              child: CircularProgressIndicator(
-              color: AppColorResource.Color_1FFF,
-            ))
+          child: CircularProgressIndicator(
+            color: AppColorResource.Color_1FFF,
+          ))
           : Column(
-              children: const [
-                MyAppBar(
-                  appbartitle: 'Polling',
-                ),
-                /*
+        children: [
+          const MyAppBar(
+            appbartitle: 'Polling',
+          ),
+          Expanded(
+              child: ListView(
+                children: const [
+                  /*
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: AppColorResource.Color_000),
+                          color: AppColorResource.Color_DFF,
+                          shape: BoxShape.rectangle,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CachedNetworkImage(
+                                  placeholder: (context, url) => const SizedBox(
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: AppColorResource.Color_FFF,
+                                      ),
+                                    ),
+                                  ),
+                                  fit: BoxFit.fill,
+                                  imageUrl:
+                                      "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/pollImages%2FNBA_Finals_(2023).png?alt=media&token=86a2fb99-3510-43d1-8536-23f8b4b16bef",
+                                )),
+                            Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                      color: AppColorResource.Color_000),
+                                  color: AppColorResource.Color_FFF,
+                                  shape: BoxShape.rectangle,
+                                ),
+                                child: Polls(
+                                    question:
+                                        Text('What is the capital of Egypt'),
+                                    children: [
+                                      Polls.options(
+                                          title: 'Cairo', value: option1),
+                                      Polls.options(
+                                          title: 'Mecca', value: option2),
+                                      Polls.options(
+                                          title: 'Denmark', value: option3),
+                                      Polls.options(
+                                          title: 'Mogadishu', value: option4),
+                                    ],
+                                    onVoteBackgroundColor: Colors.blue,
+                                    leadingBackgroundColor: Colors.blue,
+                                    backgroundColor: Colors.white,
+                                    onVote: (choice) {
+                                      if (choice == 1) {
+                                        option1 += 1.0;
+                                      }
+                                      if (choice == 2) {
+                                        option1 += 1.0;
+                                      }
+                                      if (choice == 3) {
+                                        option1 += 1.0;
+                                      }
+                                      if (choice == 4) {
+                                        option1 += 1.0;
+                                      }
+                                    }))
+                          ],
+                        ),
+                      ),
+                    ),
+
+                     */
+                ],
+              ))
+          /*
                 AppButton(
                   onPressed: () {
                     Navigator.push(
@@ -72,9 +153,9 @@ class _LayOut extends StatelessWidget {
                   },
                   child: Text('next'),
                 )
-                
+
                  */
-                /*
+          /*
                     Expanded(
                       child: ListView(
                         children: [
@@ -492,8 +573,8 @@ class _LayOut extends StatelessWidget {
                     ),
 
                      */
-              ],
-            ),
+        ],
+      ),
     );
   }
 }
