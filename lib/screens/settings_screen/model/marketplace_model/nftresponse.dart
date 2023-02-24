@@ -54,27 +54,39 @@ class Items {
 }
 
 class NFTS {
+  String specific1;
   String utility;
   String description;
   String fbImageUrl;
+  String aRUrl;
+  String price;
+  String specific;
   String type;
   String url;
   String name;
   String target;
 
   NFTS(
-      {this.utility,
+      {this.specific1,
+      this.utility,
       this.description,
       this.fbImageUrl,
+      this.aRUrl,
+      this.price,
+      this.specific,
       this.type,
       this.url,
       this.name,
       this.target});
 
   NFTS.fromJson(Map<String, dynamic> json) {
+    specific1 = json['specific1'];
     utility = json['Utility'];
     description = json['Description'];
     fbImageUrl = json['fbImageUrl'];
+    aRUrl = json['ARUrl'];
+    price = json['price'];
+    specific = json['specific'];
     type = json['type'];
     url = json['Url'];
     name = json['Name'];
@@ -83,9 +95,13 @@ class NFTS {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['specific1'] = this.specific1;
     data['Utility'] = this.utility;
     data['Description'] = this.description;
     data['fbImageUrl'] = this.fbImageUrl;
+    data['ARUrl'] = this.aRUrl;
+    data['price'] = this.price;
+    data['specific'] = this.specific;
     data['type'] = this.type;
     data['Url'] = this.url;
     data['Name'] = this.name;

@@ -71,6 +71,7 @@ dependencies:
   json_annotation: ^4.8.0
   syncfusion_flutter_charts: ^20.4.51
   polls: ^1.0.1
+  shared_preferences: ^2.0.18
 
 dependency_overrides:
   fluttertoast: 8.1.2

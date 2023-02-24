@@ -28,6 +28,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
   var ap;
   var apikey;
   var balance;
+  var addressvalue;
   var responseaddressis;
   NFTDataResponse nftDataResponse;
   UserAddressResponse userAddressResponse;
@@ -36,7 +37,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
   NFTDataRequest nftDataRequest;
   UrlsModel urlsModel;
   List<NFTS> nftData = [];
-  GetNFTSModel getNFTSModel;
+  NFTResponse naftresponse;
   NFTClaimModel nftClaimModel;
 
   void listenerreset(AuthenticationState state) {
@@ -45,13 +46,18 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
 
   Future<void> init() async {
     emit(AuthenticationLoadingState());
+    debugPrint('auth cubit before delayed ');
     await Future.delayed(const Duration(seconds: 3));
+    debugPrint('auth cubit before geturls ');
     await getMasterUrlsandtokens();
+    debugPrint('auth cubit before if ');
     if (FirebaseAuth.instance.currentUser != null) {
+      debugPrint('auth cubit user is ${FirebaseAuth.instance.currentUser}');
       await loggedIn();
       // emit(AuthenticationAuthenticatedState());
       // await AddressRequest();
     } else {
+      debugPrint('auth cubit else loop ');
       emit(AuthenticationUnAuthenticatedState());
     }
   }
@@ -63,13 +69,17 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
     emit(AuthenticationAddreessRequestedState());
     var address = await PreferenceHelper.getToken();
     if (address == null) {
+      debugPrint('address null');
       if (urlsModel == null) {
         await getMasterUrlsandtokens();
       }
 
-      var uid = FirebaseAuth.instance.currentUser?.uid;
+      var uid = FirebaseAuth.instance.currentUser.uid;
       var email = FirebaseAuth.instance.currentUser?.email;
       UserIDRequest userIDRequest = UserIDRequest(userId: uid);
+      debugPrint('the response uid ${urlsModel.apikey}');
+      debugPrint('the response uid ${urlsModel.addressRequestUrl}');
+
       debugPrint('the response uid $uid');
       final responseaddress = (await Dio().post(urlsModel.addressRequestUrl,
           data: userIDRequest.toJson(),
@@ -77,7 +87,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
               headers: {"x-api-key": urlsModel.apikey},
               followRedirects: false,
               validateStatus: (status) {
-                return status < 500;
+                return status < 1000;
               })));
       debugPrint('the response is $responseaddress');
 
@@ -86,16 +96,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
 
       debugPrint(
           'the apple response is  ${userAddressResponse?.body.toString()}');
-      //var addressfromservice = userAddressResponse?.body.toString();
 
-      // if (addressfromservice == "Address already created") {
-      var snapshotaddress = FirebaseDatabase.instance
-          .ref('Master')
-          .child('Address')
-          .child(uid)
-          .child("address");
-      // .ref('$dbHost/Address/${_auth.currentUser!.uid}')
-      //.get();
       FirebaseDatabase.instance
           .ref('Master')
           .child('Address')
@@ -109,65 +110,50 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
           debugPrint(
               'the vaqlue notifier address is ${valueNotifier.value.toString()}');
           await PreferenceHelper.saveAddress(responseaddressis.toString());
+          addressvalue = await PreferenceHelper.getToken();
+          debugPrint('pref address ${addressvalue}');
         } else {
           UserAddressResponse userAddressResponse;
-          valueNotifier = ValueNotifier(userAddressResponse =
+          var an = ValueNotifier(userAddressResponse =
               UserAddressResponse.fromJson(
                   responseaddress.data as Map<String, dynamic>));
+          valueNotifier = ValueNotifier(responseaddressis = an.value.body);
           debugPrint(
               'the vaqlue notifier address is78 ${valueNotifier.value.toString()}');
           await PreferenceHelper.saveAddress(valueNotifier.value.toString());
         }
       });
-
-      DataSnapshot snapshotaddressvalue = await snapshotaddress.get();
-      if (snapshotaddressvalue.value != null) {
-        debugPrint('get: ${snapshotaddressvalue.value}');
-      }
-      DatabaseEvent addressevent = await snapshotaddress.once();
-      var address = addressevent.snapshot.value.toString();
-      debugPrint('the address from db${address.toString()}');
+      addressvalue = await PreferenceHelper.getToken();
+      debugPrint('pref address 567 ${addressvalue}');
       FlowClient flowClient =
           FlowClient('access.devnet.nodes.onflow.org', 9000);
 
-      // var address = ('0x877931736ee77cff').toString();
       try {
-        debugPrint('address');
+        var address = await PreferenceHelper.getToken();
+        debugPrint('address for flow client${address.toString()}');
+        debugPrint('address for flow client${responseaddressis.toString()}');
+        debugPrint('address for flow client${addressvalue.toString()}');
+
         //var abcd = flowClient.accessClient.sendTransaction()
         // var height = await flowClient.getBlockHeight();
         balanceNotifier = ValueNotifier(balance = await flowClient
-            .getAccountBalance(responseaddressis.toString().substring(2)));
+            .getAccountBalance(addressvalue.toString().substring(2)));
         // var app = await flowClient.getAccount("547f177b243b4d80");
         var apps = flowClient.channel.createConnection();
         //  debugPrint('address ${(app)} ');
-        debugPrint('balance ${(balance)} ');
+        debugPrint('balance123 ${(balance)} ');
       } catch (ex) {
         debugPrint('address was $ex');
       }
-      // responseaddressis = ValueNotifier(addressevent.snapshot.value);
-      //address.toString();
-      // } else {
-      //responseaddressis = addressfromservice.toString();
-      // }
-
-      final res = FirebaseDatabase.instance.ref('Master/Address/$uid');
-      await res.update({"email": email});
     } else {
       FlowClient flowClient =
           FlowClient('access.devnet.nodes.onflow.org', 9000);
-      // var address = ('0x877931736ee77cff').toString();
       try {
         valueNotifier = ValueNotifier(
             responseaddressis = await PreferenceHelper.getToken());
         debugPrint('address');
-        //var abcd = flowClient.accessClient.sendTransaction()
-        // var height = await flowClient.getBlockHeight();
         balanceNotifier = ValueNotifier(balance = await flowClient
             .getAccountBalance(responseaddressis.toString().substring(2)));
-
-        // var app = await flowClient.getAccount("547f177b243b4d80");
-        var apps = flowClient.channel.createConnection();
-        //  debugPrint('address ${(app)} ');
         debugPrint('balance ${(balance)} ');
       } catch (ex) {
         debugPrint('address was $ex');
@@ -175,38 +161,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
     }
 
     emit(AuthenticationAddreessReceivedState());
-    //  }
-    /*
-      else {
-        valueNotifier = ValueNotifier(
-            responseaddressis = preferencehelperaddress.toString());
 
-        FlowClient flowClient =
-            FlowClient('access.devnet.nodes.onflow.org', 9000);
-        // var address = ('0x877931736ee77cff').toString();
-        try {
-          debugPrint(
-              'address is was ${responseaddressis.toString().substring(1)}');
-//var abcd = flowClient.accessClient.sendTransaction()
-          // var height = await flowClient.getBlockHeight();
-          balance = await flowClient.getAccountBalance("$responseaddressis");
-          balanceNotifier = ValueNotifier(balance = await flowClient
-              .getAccountBalance(responseaddressis.toString().substring(2)));
-
-          // var app = await flowClient.getAccount("547f177b243b4d80");
-          var apps = flowClient.channel.createConnection();
-          //  debugPrint('address ${(app)} ');
-          debugPrint('balance ${(balance)} ');
-        } catch (ex) {
-          debugPrint('address was $ex');
-        }
-        balanceNotifier = ValueNotifier(balance = await flowClient
-            .getAccountBalance(responseaddressis.toString().substring(2)));
-      }
-
-       */
-
-    // await AddressRequest();
     if (responseaddressis != null) {
       emit(AuthenticationAddreessReceivedState());
     }
@@ -225,7 +180,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
   }
 
   Future<void> loggedOut() async {
-    FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
     AuthAction.signIn;
     var token = await PreferenceHelper.getToken();
     debugPrint('debug112$token');
@@ -248,11 +203,11 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
     });
   }
 
-  Future<GetNFTSModel> getYourNFTs({bool forceRefresh}) async {
-    debugPrint('comming inside');
+  Future<NFTResponse> getYourNFTs({bool forceRefresh}) async {
+    debugPrint('nftdata inside');
     var address = await PreferenceHelper.getToken();
     GetNFTSRequest getNFTSRequest = GetNFTSRequest(address: address);
-    debugPrint('comming inside1');
+    debugPrint('nftdata inside1');
     if (urlsModel == null) {
       await getMasterUrlsandtokens();
     }
@@ -264,62 +219,19 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
               return status < 500;
             }),
         data: getNFTSRequest.toJson()));
-    debugPrint('comming inside2');
+    debugPrint('nftdata inside2');
 
-    getNFTSModel =
-        GetNFTSModel.fromJson(((response.data)) as Map<String, dynamic>);
+    naftresponse =
+        NFTResponse.fromJson(((response.data)) as Map<String, dynamic>);
     List<Body> userNMFT = [];
-    userNMFT.addAll(getNFTSModel.body.toList());
-    debugPrint('comming inside3');
+    userNMFT.addAll(naftresponse.body.toList());
+    debugPrint('nftdata inside3');
 
-    debugPrint('all nfts are ${userNMFT[0].utility.toString()}');
-    return getNFTSModel;
+    //  debugPrint('nftdata nfts are ${userNMFT[2].utility.toString()}');
+    return naftresponse;
   }
 
-  Future<NFTDataResponse> getUserNFTs({bool forceRefresh}) async {
-    // emit(AuthenticationNFTrequestedState());
-/*
-    var snapshotUrl = FirebaseDatabase.instance
-        .ref('Master')
-        .child('NFTClaim')
-        .child('packname');
-    var snapshotPackName = FirebaseDatabase.instance
-        .ref('Master')
-        .child('NFTClaim')
-        .child('requesturl');
-    var snapshotapikey = FirebaseDatabase.instance
-        .ref('Master')
-        .child('NFTClaim')
-        .child('apikey');
-    // .ref('$dbHost/Address/${_auth.currentUser!.uid}')
-    //.get();
-
-    DataSnapshot snapshotvalue = await snapshotUrl.get();
-    if (snapshotvalue.value != null) {
-      debugPrint('get: ${snapshotvalue.value}');
-    }
-    DatabaseEvent event = await snapshotUrl.once();
-    var packName = event.snapshot.value.toString();
-    //above code for getting request url from db
-    DataSnapshot snapshotpacknamevalue = await snapshotPackName.get();
-    if (snapshotpacknamevalue.value != null) {
-      debugPrint('get: ${snapshotpacknamevalue.value}');
-    }
-    DatabaseEvent packnameevent = await snapshotPackName.once();
-
-    var url = packnameevent.snapshot.value.toString();
-    //above code for getting packname from db
-    DataSnapshot snapshotapikeyvalue = await snapshotapikey.get();
-    if (snapshotapikeyvalue.value != null) {
-      debugPrint('get: ${snapshotapikeyvalue.value}');
-    }
-    DatabaseEvent apikeyevent = await snapshotapikey.once();
-    var apikey = apikeyevent.snapshot.value.toString();
-    debugPrint('getUserNFTs called $forceRefresh');
-    debugPrint('all uri$url');
-    debugPrint('all uri2 $packName');
-
- */
+  Future<NFTDataResponse> getMarketPlaceNFTs({bool forceRefresh}) async {
     await getMasterNFTClaim();
     nftDataRequest =
         NFTDataRequest(packName: nftClaimModel.packname.toString());
@@ -344,33 +256,3 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
     return nftDataResponse;
   }
 }
-/*
- var snapshot = FirebaseDatabase.instance
-            .ref('Master')
-            .child('Urls')
-            .child('AddressRequestUrl');
-        // .ref('$dbHost/Address/${_auth.currentUser!.uid}')
-        //.get();
-
-        DataSnapshot snapshotvalue = await snapshot.get();
-        if (snapshotvalue.value != null) {
-          debugPrint('get: ${snapshotvalue.value}');
-        }
-        DatabaseEvent event = await snapshot.once();
-        ap = event.snapshot.value.toString();
-        debugPrint('the url is${event.snapshot.value.toString()}');
-        var snapshotapikey = FirebaseDatabase.instance
-            .ref('Master')
-            .child('Urls')
-            .child('apikey');
-        // .ref('$dbHost/Address/${_auth.currentUser!.uid}')
-        //.get();
-
-        DataSnapshot snapshotapikeyvalue = await snapshotapikey.get();
-        if (snapshotapikeyvalue.value != null) {
-          debugPrint('get: ${snapshotapikeyvalue.value}');
-        }
-        DatabaseEvent eventforapikey = await snapshotapikey.once();
-        apikey = eventforapikey.snapshot.value.toString();
-        debugPrint('the apikey is ${eventforapikey.snapshot.value.toString()}');
- */

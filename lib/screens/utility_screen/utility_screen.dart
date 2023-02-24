@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:walletutilityplugin/nft_detail/cubit/nft_detail_cubit.dart';
@@ -48,7 +49,7 @@ class UtilityScreens extends StatelessWidget {
       builder: (context, state) => Column(
         children: [
           const MyAppBar(
-            appbartitle: 'Utility',
+            appbartitle: 'Feeds',
           ),
           Expanded(
             child: ListView(
@@ -114,6 +115,32 @@ class UtilityScreens extends StatelessWidget {
                     ),
                     AppButton(
                       onPressed: () async {
+                        cubit.getAr3DAvatarActivity();
+                        // cubitAuth.loggedOut();
+                      },
+                      child: const Text(
+                        '3d ar',
+                        style: TextStyle(color: AppColorResource.Color_FFF),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    AppButton(
+                      onPressed: () async {
+                        cubit.getVideoArAvatarActivity();
+                        // cubitAuth.loggedOut();
+                      },
+                      child: const Text(
+                        'video  ar',
+                        style: TextStyle(color: AppColorResource.Color_FFF),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    AppButton(
+                      onPressed: () async {
                         await cubit.flow();
                       },
                       child: const Text(
@@ -126,7 +153,10 @@ class UtilityScreens extends StatelessWidget {
                     ),
                     AppButton(
                       onPressed: () async {
-                        await cubit.getnfts();
+                        var emailidd =
+                            FirebaseAuth.instance.currentUser.displayName;
+                        debugPrint('njjwa$emailidd');
+                        //  await cubit.getnfts();
                       },
                       child: const Text(
                         'Face Filter',

@@ -28,6 +28,28 @@ class UtilityScreenCubit extends BaseCubit<UtilityScreenState> {
     }
   }
 
+  void getAr3DAvatarActivity() async {
+    try {
+      platform.invokeMethod('3DModelActivity', {
+        'URL':
+            "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2Fsportsman.glb?alt=media&token=35ad0782-3449-4886-8a0e-70aff34f36cb"
+      });
+    } on PlatformException catch (e) {
+      debugPrint(e.message);
+    }
+  }
+
+  void getVideoArAvatarActivity() async {
+    try {
+      platform.invokeMethod('ARVideoActivity', {
+        'URL':
+            "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2Fnbatospshot1compressed.mp4?alt=media&token=6aaa9283-9091-46d0-8485-7ea285cf64b3"
+      });
+    } on PlatformException catch (e) {
+      debugPrint(e.message);
+    }
+  }
+
   flow() async {
     //var address = await PreferenceHelper.getToken();
 

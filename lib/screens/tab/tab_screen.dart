@@ -68,18 +68,18 @@ class _TabScreenState extends State<TabScreen> {
               icon: Padding(
                   padding: EdgeInsets.all(3.0),
                   child: Icon(
-                    Icons.dataset_linked_sharp,
+                    Icons.feed_sharp,
                     size: 25,
                     color: AppColorResource.Color_FFF,
                   )),
               activeIcon: Padding(
                   padding: EdgeInsets.all(3.0),
                   child: Icon(
-                    Icons.dataset_linked_sharp,
+                    Icons.feed_sharp,
                     size: 35,
                     color: AppColorResource.Color_FFF,
                   )),
-              label: 'Utility',
+              label: 'Feeds',
             ),
             BottomNavigationBarItem(
               icon: Padding(
@@ -113,7 +113,7 @@ class _TabScreenState extends State<TabScreen> {
                     size: 35,
                     color: AppColorResource.Color_FFF,
                   )),
-              label: 'Feeds',
+              label: 'Polls',
             ),
           ],
           currentIndex: cubit.tabIndex,

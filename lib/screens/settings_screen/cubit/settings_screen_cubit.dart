@@ -28,7 +28,7 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
   Future<void> init() async {
     emit(SettingsScreenLoadingState());
     if (authenticationCubit.nftData.isEmpty) {
-      await authenticationCubit.getUserNFTs();
+      await authenticationCubit.getMarketPlaceNFTs();
     }
     for (var i = 0; i < authenticationCubit.nftData.length; i++) {
       minted.add("false");

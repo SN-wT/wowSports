@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -20,6 +21,7 @@ class LoginScreenCubit extends Cubit<LoginScreenState> {
       // await authenticationCubit.loggedIn();
 
       email = FirebaseAuth.instance.currentUser?.email;
+
       //emit(LoginScreenAuthenticatedState());
     }
     emit(LoginScreenLoadedState());
@@ -35,7 +37,14 @@ class LoginScreenCubit extends Cubit<LoginScreenState> {
       idToken: googleAuth?.idToken,
     );
     await FirebaseAuth.instance.signInWithCredential(credential);
-    await Future.delayed(const Duration(seconds: 3));
+    var uid = FirebaseAuth.instance.currentUser.uid;
+    debugPrint('uid in lsc$uid');
+
+    final res = FirebaseDatabase.instance.ref('Master/Address/$uid');
+    var emailid = FirebaseAuth.instance.currentUser.email;
+
+    await res.update({"email": emailid});
+    await Future.delayed(const Duration(seconds: 2));
 
     await authenticationCubit.loggedIn();
   }

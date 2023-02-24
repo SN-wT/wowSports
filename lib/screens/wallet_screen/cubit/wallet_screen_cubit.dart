@@ -21,6 +21,7 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
   TextEditingController addresstcontroller = TextEditingController();
   var apikey;
   LInkResponse lInkResponse;
+  var pkey;
 
   Future<void> init() async {
     emit(WalletScreenLoadingState());
@@ -55,17 +56,17 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
     emit(WalletScreenRefreshState());
   }
 
-  linkkey() async {
+  linkkey(pkey) async {
     if (authenticationCubit.urlsModel == null) {
       await authenticationCubit.getMasterUrlsandtokens();
     }
     emit(WalletScreenLinkRequestState());
     var uid = FirebaseAuth.instance.currentUser.uid;
     LInkRequest lInkRequest = LInkRequest(
-      publicKey: puplickeytextcontroller.text.toString(),
+      publicKey: pkey,
       userId: uid,
     );
-    var response = await Dio().post(authenticationCubit.urlsModel.getnfts,
+    var response = await Dio().post(authenticationCubit.urlsModel.linkrequest,
         options: Options(
             headers: {"x-api-key": authenticationCubit.urlsModel.apikey},
             followRedirects: false,
@@ -77,9 +78,9 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
     lInkResponse = LInkResponse.fromJson(
         jsonDecode(jsonEncode(response.data as Map<String, dynamic>)));
     var linkresponse = lInkResponse.body.toString();
-    debugPrint("the link response ${linkresponse.toString()}");
+    debugPrint("the link response ${lInkResponse.body.toString()}");
     emit(WalletScreenLinkedState());
-    if (linkresponse == "publicKey added successfully") {
+    if (lInkResponse.body.toString() == "publicKey added successfully") {
       emit(WalletScreenLinkrefreshState());
     }
   }

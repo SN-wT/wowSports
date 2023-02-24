@@ -12,18 +12,6 @@ import 'firebase_options.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-/*
-  await Firebase.initializeApp(
-      name: "https://wowtweb3sdk-default-rtdb.firebaseio.com",
-      options: const FirebaseOptions(
-        apiKey: 'AIzaSyAR_4bTxXjKMjRteDJSsYFL4-ORq9jexCU',
-        appId: '1:12620007991:android:becdccdc924e937cc44db2',
-        messagingSenderId: '12620007991',
-        projectId: 'wowtweb3sdk',
-        databaseURL: 'https://wowtweb3sdk-default-rtdb.firebaseio.com',
-        storageBucket: 'wowtweb3sdk.appspot.com',
-      ));
-  */
 
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   BlocOverrides.runZoned(

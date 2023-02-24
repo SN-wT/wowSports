@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:walletutilityplugin/nft_detail/cubit/nft_detail_cubit.dart';
 import 'package:walletutilityplugin/nft_detail/model/alchemy_nft_response.dart';
-import 'package:walletutilityplugin/wallet/helpers/showbottomsheet.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/router.dart';
 import 'package:wowsports/screens/wallet_screen/model/getnfts/get_bft_response_model.dart';
@@ -285,6 +284,7 @@ class WalletScreen extends StatelessWidget {
                                                                 ),
                                                               ),
                                                             ),
+                                                            /*
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
@@ -327,6 +327,8 @@ class WalletScreen extends StatelessWidget {
                                                                 ),
                                                               ),
                                                             ),
+
+                                                             */
                                                             const SizedBox(
                                                               height: 20,
                                                             ),
@@ -338,8 +340,14 @@ class WalletScreen extends StatelessWidget {
                                                                       AppButton(
                                                                     onPressed:
                                                                         () async {
+                                                                      cubit.pkey = cubit
+                                                                          .puplickeytextcontroller
+                                                                          .text;
+                                                                      debugPrint(
+                                                                          'the pkey is ${cubit.pkey}');
                                                                       await cubit
-                                                                          .linkkey();
+                                                                          .linkkey(
+                                                                              cubit.pkey);
                                                                     },
                                                                     child:
                                                                         const Text(
@@ -366,6 +374,7 @@ class WalletScreen extends StatelessWidget {
                                               size: 25),
                                         ),
                                       ),
+                                      /*
                                       Center(
                                         child: IconButton(
                                           onPressed: () async {
@@ -526,6 +535,8 @@ class WalletScreen extends StatelessWidget {
                                               size: 25),
                                         ),
                                       ),
+                                      \
+                                       */
                                     ],
                                   ),
                                   const SizedBox(
@@ -570,7 +581,7 @@ class WalletScreen extends StatelessWidget {
                       FutureBuilder(
                           future: cubitAuth.getYourNFTs(),
                           builder: (BuildContext context,
-                              AsyncSnapshot<GetNFTSModel> nftResponse) {
+                              AsyncSnapshot<NFTResponse> nftResponse) {
                             List<Body> nftData = [];
 
                             if (nftResponse.data != null &&
@@ -580,6 +591,7 @@ class WalletScreen extends StatelessWidget {
                             }
                             if (nftResponse.connectionState ==
                                 ConnectionState.waiting) {
+                              debugPrint('nftdata waiting');
                               return const SizedBox(
                                 height: 255,
                                 child: Center(
@@ -587,6 +599,7 @@ class WalletScreen extends StatelessWidget {
                                 ),
                               );
                             } else {
+                              debugPrint('nftdata length is ${nftData.length}');
                               return RefreshIndicator(
                                 onRefresh: cubit.init,
                                 child: GridView.builder(
@@ -604,6 +617,14 @@ class WalletScreen extends StatelessWidget {
                                           padding: const EdgeInsets.all(8.0),
                                           child: InkWell(
                                             onTap: () {
+                                              debugPrint(
+                                                  'length is ${nftData.length}');
+                                              debugPrint(
+                                                  'length is ${nftData[index].specific}');
+                                              debugPrint(
+                                                  'length is ${nftData[index].target}');
+                                              debugPrint(
+                                                  'length is ${nftData[index].specific1}');
                                               OwnedNfts ownedNfts = OwnedNfts();
 
                                               // debugPrint('target image is ${nftData[index].target}');
@@ -612,10 +633,20 @@ class WalletScreen extends StatelessWidget {
                                                   "image":
                                                       nftData[index].url ?? '',
                                                   //"animation_url": video,
-                                                  "specific": null,
-                                                  "specific1": null,
+                                                  "specific": nftData[index]
+                                                              .specific ==
+                                                          "NA"
+                                                      ? null
+                                                      : nftData[index].specific,
+                                                  "specific1": nftData[index]
+                                                              .specific1 ==
+                                                          "NA"
+                                                      ? null
+                                                      : nftData[index]
+                                                          .specific1,
                                                   "target":
-                                                      nftData[index].name ?? "",
+                                                      nftData[index].target ??
+                                                          "",
                                                   "attributes": [
                                                     {
                                                       "value":

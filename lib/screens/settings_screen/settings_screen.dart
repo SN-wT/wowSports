@@ -62,7 +62,7 @@ class SettingsScreenLayOut extends StatelessWidget {
                       child: ListView(
                         children: [
                           FutureBuilder(
-                              future: cubitAuth.getUserNFTs(),
+                              future: cubitAuth.getMarketPlaceNFTs(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<NFTDataResponse> nftResponse) {
                                 List<NFTS> nftData = [];
@@ -129,9 +129,9 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                         ),
                                                       ),
                                                   fit: BoxFit.fill,
-                                                  imageUrl: nftData[index]
+                                                  imageUrl: (nftData[index]
                                                           .fbImageUrl
-                                                          .toString() ??
+                                                          .toString()) ??
                                                       ''),
                                             ),
                                           ),
@@ -402,10 +402,14 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                             ownedNfts =
                                                                                 OwnedNfts.fromJson({
                                                                               "metadata": {
-                                                                                "image": nftData[index].url ?? '',
+                                                                                "image": nftData[index].fbImageUrl.toString() ?? '',
                                                                                 //"animation_url": video,
-                                                                                "specific": null,
-                                                                                "specific1": null,
+                                                                                "specific": nftData[index].specific != "NA" ? nftData[index].specific : null,
+                                                                                "specific1": nftData[index].aRUrl != "NA"
+                                                                                    ? nftData[index].aRUrl
+                                                                                    : nftData[index].specific1 != "NA"
+                                                                                        ? nftData[index].specific1
+                                                                                        : null,
                                                                                 "target": nftData[index].target ?? "",
                                                                                 "attributes": [
                                                                                   {
@@ -439,14 +443,16 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                           ),
                                                         ],
                                                       ),
-                                                      const Padding(
+                                                      Padding(
                                                         padding:
-                                                            EdgeInsets.all(0.0),
+                                                            const EdgeInsets
+                                                                .all(0.0),
                                                         child: Text(
-                                                          'Price : 0',
+                                                          'Price : ${nftData[index].price.toString()}',
                                                           overflow: TextOverflow
                                                               .ellipsis,
-                                                          style: TextStyle(
+                                                          style:
+                                                              const TextStyle(
                                                             color:
                                                                 AppColorResource
                                                                     .Color_FFF,
