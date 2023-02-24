@@ -1,16 +1,7 @@
-# wowsports
+# wowSports
 
-A new Flutter project.
+All code in this repo has been written for the hackathon except -
+1) The face swap feature - we have integrated with a existing plug-in
+2) The AR features borrows (repurposed code minimally) from the Android AR example
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Images - We have used a few images for representative purposes. Copyrights for these images are with the respective owners.
