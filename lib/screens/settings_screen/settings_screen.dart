@@ -195,7 +195,7 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                 const EdgeInsets
                                                                     .all(0.0),
                                                             child: Text(
-                                                              'Utility : ${nftData[index].utility ?? ''}',
+                                                              'Utility : ${nftData[index].utility == 'faceswap' ? 'Face swap' : 'AR Avatar'}',
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
@@ -233,7 +233,6 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                           onPressed:
                                                                               () async {
                                                                             //await cubitAuth.loggedOut();
-
                                                                             showBottomSheet(
                                                                               context: context,
                                                                               builder: (context) {
@@ -341,6 +340,7 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                                                     width: (MediaQuery.of(context).size.width / (2.6)),
                                                                                                     child: AppButton(
                                                                                                       onPressed: () async {
+                                                                                                        Navigator.pop(context);
                                                                                                         await cubit.mint(nftData[index].name ?? '', index, nftData.length);
                                                                                                         //await cubit.check();
 
@@ -389,7 +389,7 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                         height:
                                                                             30,
                                                                         width: (MediaQuery.of(context).size.width /
-                                                                            (4)),
+                                                                            (3)),
                                                                         child:
                                                                             AppButton(
                                                                           onPressed:
@@ -436,7 +436,7 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                             //await cubit.check();
                                                                           },
                                                                           child:
-                                                                              Text(nftData[index].utility.toString() ?? ""),
+                                                                              Text(nftData[index].utility == 'faceswap' ? 'Face swap' : 'AR Avatar'),
                                                                         ),
                                                                       ),
                                                                     )),

@@ -779,7 +779,7 @@ class LayOut extends StatelessWidget {
                                                                         .fromLTRB(
                                                                     8, 3, 0, 3),
                                                             child: Text(
-                                                              'Utility : ${nftData[index].utility.toString() ?? ""}',
+                                                              'Utility : ${nftData[index].utility == 'faceswap' ? 'Face swap' : 'AR Avatar'}',
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
