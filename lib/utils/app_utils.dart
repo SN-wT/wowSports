@@ -21,7 +21,7 @@ class AppUtils {
       msg: text,
       toastLength: Toast.LENGTH_SHORT,
       gravity: toastGravity ?? ToastGravity.BOTTOM,
-      backgroundColor: color,
+      backgroundColor: Colors.black,
       textColor: Colors.white,
       webBgColor: webColor,
       webPosition: "center",

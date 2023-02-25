@@ -6,6 +6,7 @@ import 'package:walletutilityplugin/nft_detail/model/alchemy_nft_response.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/router.dart';
 import 'package:wowsports/screens/wallet_screen/model/getnfts/get_bft_response_model.dart';
+import 'package:wowsports/utils/app_utils.dart';
 import 'package:wowsports/utils/color_resource.dart';
 import 'package:wowsports/widgets/button.dart';
 import 'package:wowsports/widgets/myappbar.dart';
@@ -15,6 +16,31 @@ import 'cubit/wallet_screen_state.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<WalletScreenCubit>();
+
+    return BlocListener(
+      bloc: cubit,
+      listener: (context, state) {
+
+        if (state is WalletScreenErrorState) {
+          AppUtils.showSnackBar(state.error, context);
+        }
+        if(state is WalletScreenLinkrefreshState){
+          debugPrint('showing snackbar for link connected ');
+          AppUtils.showSnackBar("Public key linked", context);
+        }
+        debugPrint('listener state is ${state}');
+      },
+      child: const LayOut(),
+    );
+  }
+}
+
+class LayOut extends StatelessWidget {
+  const LayOut({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +65,8 @@ class WalletScreen extends StatelessWidget {
                     child: ListView(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(15.0),
+                        padding:
+                            const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 2.0),
                         child: Container(
                             margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                             decoration: BoxDecoration(
@@ -71,36 +98,35 @@ class WalletScreen extends StatelessWidget {
                                   const SizedBox(
                                     height: 15,
                                   ),
-                                  ValueListenableBuilder(
-                                      valueListenable: cubitAuth.valueNotifier,
-                                      builder: (context, value, child) {
-                                        return Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "Address : ${value.toString()}",
-                                            style: const TextStyle(
-                                                color:
-                                                    AppColorResource.Color_000,
-                                                fontFamily: 'Nunito',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 16),
-                                          ),
-                                        );
-                                      }),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "Address : ${cubit.address}",
+                                      style: const TextStyle(
+                                          color: AppColorResource.Color_000,
+                                          fontFamily: 'Nunito',
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 16),
+                                    ),
+                                  ),
                                   const SizedBox(
                                     height: 13,
                                   ),
                                   //  FutureBuilder( future:  cubitAuth.balanceQuery() ,builder: );
-                                  ValueListenableBuilder(
-                                      valueListenable:
-                                          cubitAuth.balanceNotifier,
-                                      builder: (context, value, child) {
-                                        debugPrint('updating value to $value');
+                                  FutureBuilder(
+                                      future: cubit.balanceQuery(),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<String> balance) {
+                                        String showBalance = "Loading...";
+                                        if (balance.connectionState ==
+                                            ConnectionState.done) {
+                                          showBalance = balance.data;
+                                        }
                                         return Container(
                                           alignment: Alignment.centerLeft,
-                                          child: value.toString() != null
+                                          child: balance != null
                                               ? Text(
-                                                  "Flow : ${value.toString()}",
+                                                  "Flow : ${showBalance}",
                                                   style: const TextStyle(
                                                       color: AppColorResource
                                                           .Color_000,
@@ -121,8 +147,9 @@ class WalletScreen extends StatelessWidget {
                                                 ),
                                         );
                                       }),
+
                                   const SizedBox(
-                                    height: 13,
+                                    height: 2,
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -149,7 +176,7 @@ class WalletScreen extends StatelessWidget {
                                                       ((MediaQuery.of(context)
                                                               .size
                                                               .height) /
-                                                          2.1),
+                                                          2.5),
                                                   width: MediaQuery.of(context)
                                                       .size
                                                       .width,
@@ -228,7 +255,7 @@ class WalletScreen extends StatelessWidget {
                                                                             8.0),
                                                                 child: Center(
                                                                   child: Text(
-                                                                    "Stubbing with public key & address inputs as use couldn't find a non-custodial mobile wallet sdk to integrate with",
+                                                                    "Stubbing with public key as use couldn't find a non-custodial mobile wallet sdk to integrate with",
                                                                     style:
                                                                         TextStyle(
                                                                       color: AppColorResource
@@ -296,51 +323,6 @@ class WalletScreen extends StatelessWidget {
                                                                 ),
                                                               ),
                                                             ),
-                                                            /*
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              child: Container(
-                                                                height: 50,
-                                                                width: (MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width /
-                                                                    (1.2)),
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            10),
-                                                                    color: AppColorResource
-                                                                        .Color_FFF,
-                                                                    border: Border.all(
-                                                                        color: AppColorResource
-                                                                            .Color_000)),
-                                                                child:
-                                                                    TextField(
-                                                                  decoration: const InputDecoration(
-                                                                      hintText:
-                                                                          "Enter address",
-                                                                      hintStyle: TextStyle(
-                                                                          color: AppColorResource
-                                                                              .Color_000),
-                                                                      prefixIcon:
-                                                                          Icon(Icons
-                                                                              .abc_outlined)),
-                                                                  style: const TextStyle(
-                                                                      color: AppColorResource
-                                                                          .Color_000),
-                                                                  controller: cubit
-                                                                      .addresstcontroller,
-                                                                  onTap: () {},
-                                                                  obscureText:
-                                                                      true,
-                                                                ),
-                                                              ),
-                                                            ),
-
-                                                             */
                                                             const SizedBox(
                                                               height: 20,
                                                             ),
@@ -352,6 +334,7 @@ class WalletScreen extends StatelessWidget {
                                                                       AppButton(
                                                                     onPressed:
                                                                         () async {
+                                                                          Navigator.pop(context);
                                                                       cubit.pkey = cubit
                                                                           .puplickeytextcontroller
                                                                           .text;
@@ -359,7 +342,8 @@ class WalletScreen extends StatelessWidget {
                                                                           'the pkey is ${cubit.pkey}');
                                                                       await cubit
                                                                           .linkkey(
-                                                                              cubit.pkey);
+                                                                              cubit.pkey, context);
+
                                                                     },
                                                                     child:
                                                                         const Text(
@@ -381,7 +365,7 @@ class WalletScreen extends StatelessWidget {
                                             );
                                           },
                                           icon: const Icon(Icons.link_sharp,
-                                              weight: 123,
+                                              //          weight: 123,
                                               color: AppColorResource.Color_0EA,
                                               size: 25),
                                         ),
@@ -552,7 +536,7 @@ class WalletScreen extends StatelessWidget {
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 15,
+                                    height: 1,
                                   ),
                                 ],
                               ),
@@ -561,6 +545,7 @@ class WalletScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
+                      // NFTs for the Wallet
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(

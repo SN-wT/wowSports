@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flow_dart_sdk/fcl/fcl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/screens/wallet_screen/cubit/wallet_screen_state.dart';
 import 'package:wowsports/screens/wallet_screen/model/link_model/link_request.dart';
 import 'package:wowsports/screens/wallet_screen/model/link_model/link_response_model.dart';
+import 'package:wowsports/utils/app_utils.dart';
 import 'package:wowsports/utils/base_cubit.dart';
+import 'package:wowsports/utils/shared_preference.dart';
 
 class WalletScreenCubit extends BaseCubit<WalletScreenState> {
   final AuthenticationCubitBloc authenticationCubit;
@@ -22,16 +25,14 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
   var apikey;
   LInkResponse lInkResponse;
   var pkey;
+  String address;
 
   Future<void> init() async {
     emit(WalletScreenLoadingState());
-
     var snapshot = FirebaseDatabase.instance
         .ref('Master')
         .child('Urls')
         .child('AddressRequestUrl');
-    // .ref('$dbHost/Address/${_auth.currentUser!.uid}')
-    //.get();
 
     DataSnapshot snapshotvalue = await snapshot.get();
     if (snapshotvalue.value != null) {
@@ -42,8 +43,6 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
     debugPrint('the url is${event.snapshot.value.toString()}');
     var snapshotapikey =
         FirebaseDatabase.instance.ref('Master').child('Urls').child('apikey');
-    // .ref('$dbHost/Address/${_auth.currentUser!.uid}')
-    //.get();
 
     DataSnapshot snapshotapikeyvalue = await snapshotapikey.get();
     if (snapshotvalue.value != null) {
@@ -53,10 +52,29 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
     apikey = eventforapikey.snapshot.value.toString();
     debugPrint('the apikey is ${eventforapikey.snapshot.value.toString()}');
 
+    address = await PreferenceHelper.getToken();
+    debugPrint("address is $address");
+
     emit(WalletScreenRefreshState());
   }
 
-  linkkey(pkey) async {
+  Future<String> balanceQuery() async {
+    FlowClient flowClient = FlowClient('access.devnet.nodes.onflow.org', 9000);
+
+    try {
+      String balance = await flowClient.getAccountBalance(address.toString().substring(2));
+      double balanceInt = double.parse(balance);
+      balanceInt = balanceInt * 100;
+      debugPrint('balance123 ${(balanceInt)} ');
+      debugPrint('balance123 ${(balance)} ');
+      return balanceInt.toString();
+    } catch (ex) {
+      debugPrint('address was $ex');
+    }
+  }
+
+  linkkey(pkey, context) async {
+    AppUtils.showSnackBar("Processing...", context);
     if (authenticationCubit.urlsModel == null) {
       await authenticationCubit.getMasterUrlsandtokens();
     }
@@ -81,7 +99,13 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
     debugPrint("the link response ${lInkResponse.body.toString()}");
     emit(WalletScreenLinkedState());
     if (lInkResponse.body.toString() == "publicKey added successfully") {
-      emit(WalletScreenLinkrefreshState());
+      emit(WalletScreenLinkrefreshState("Key added successfully"));
+
+   //   AppUtils.showSnackBar("The key is now added to your account", context);
+      AppUtils.showToast("The key is now added to your account");
+    } else {
+      emit(WalletScreenErrorState("Something went wrong! We couldn't link the key to your account"));
+     // AppUtils.showSnackBar("Something went wrong! We couldn't link the key to your account", context);
     }
   }
 /*

@@ -10,7 +10,15 @@ class WalletScreenLinkRequestState extends WalletScreenState {}
 
 class WalletScreenLinkedState extends WalletScreenState {}
 
-class WalletScreenLinkrefreshState extends WalletScreenState {}
+class WalletScreenLinkrefreshState extends WalletScreenState {
+  final String status;
+
+  WalletScreenLinkrefreshState(this.status);
+
+  @override
+  bool operator ==(Object other) => false;
+
+}
 
 class WalletScreenRefreshState extends WalletScreenState {
   @override

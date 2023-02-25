@@ -17,7 +17,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:label="wowsports"
+        android:label="wowSports"
         tools:replace="android:label">
         <activity
             android:name=".AR3DModel"

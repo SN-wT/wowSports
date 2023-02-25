@@ -58,6 +58,8 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
       // await AddressRequest();
     } else {
       debugPrint('auth cubit else loop ');
+      addressvalue = await PreferenceHelper.getToken();
+      debugPrint("address value is $addressvalue");
       emit(AuthenticationUnAuthenticatedState());
     }
   }

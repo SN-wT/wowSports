@@ -137,7 +137,7 @@ class _Layout extends StatelessWidget {
     context.select((TabScreenCubit cubit) => cubit.tabIndex);
     switch (cubit.tabIndex) {
       case 0:
-        return const WalletScreen();
+        return const LayOut();
       case 1:
         return const UtilityScreen();
       case 2:
