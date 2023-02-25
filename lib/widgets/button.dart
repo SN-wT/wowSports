@@ -5,23 +5,30 @@ class AppButton extends StatelessWidget {
   final Function() onPressed;
   Widget child;
   Color color;
+  double radius;
 
-  AppButton({Key key, this.onPressed, this.color, this.child})
+  AppButton({Key key, this.onPressed, this.color, this.radius, this.child})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration:const  BoxDecoration(
+      decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              AppColorResource.Color_0EA,
-              AppColorResource.Color_1FFF,
-            ],
+            colors: color != null
+                ? [
+                    color,
+                    color,
+                  ]
+                : [
+                    AppColorResource.Color_0EA,
+                    AppColorResource.Color_1FFF,
+                  ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(8))),
+          border: Border.all(color: AppColorResource.Color_0EA),
+          borderRadius: BorderRadius.all(Radius.circular(radius ?? 8))),
       child: SizedBox(
         width: ((MediaQuery.of(context).size.width) / 1.4),
         child: ElevatedButton(
