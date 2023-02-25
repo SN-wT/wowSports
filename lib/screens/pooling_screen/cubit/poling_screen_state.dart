@@ -12,9 +12,11 @@ class PolingScreenLoadedState extends PolingScreenState {
   // HelpScreenLoadedState(this.faqs);
 }
 
-class PolingScreenPoleRequestedState extends PolingScreenState {}
+class PollingScreenPoleRequestedState extends PolingScreenState {}
 
-class PolingScreenAuthenticatedState extends PolingScreenState {}
+class AllreadyPolledState extends PolingScreenState {}
+
+class PolledState extends PolingScreenState {}
 
 class PolingScreenErrorState extends PolingScreenState {
   final String error;

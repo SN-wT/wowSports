@@ -14,6 +14,7 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
   Map<String, PollDetail> pollsDetail = {};
   List<PollDetail> polls = [];
   List<String> questions = [];
+  int pollingIndex;
 
   PolingScreenCubit(this.authenticationCubit)
       : super(PolingScreenInitialState());
@@ -24,11 +25,19 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
     emit(PolingScreenLoadedState());
   }
 
-  Future<PollingResponse> request(chice, pollname) async {
+  Future<PollingResponse> request(chice, pollname, index) async {
+    pollingIndex = index;
+    emit(PollingScreenPoleRequestedState());
     if (authenticationCubit.urlsModel == null) {
       await authenticationCubit.getMasterUrlsandtokens();
     }
     var uid = FirebaseAuth.instance.currentUser.uid;
+    debugPrint('the mint response is ${uid.toString()}');
+    debugPrint('the mint response is ${chice.toString()}');
+    debugPrint('the mint response is ${pollname.toString()}');
+    debugPrint(
+        'the mint response is ${authenticationCubit.urlsModel.pollrequest}');
+    debugPrint('the mint response is ${authenticationCubit.urlsModel.apikey}');
 
     PollingRequest pollingRequest =
         PollingRequest(userId: uid, pollname: pollname, choice: chice);
@@ -42,10 +51,18 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
           }),
       data: pollingRequest.toJson(),
     ));
-    PollingResponse pollingResponse =
-        PollingResponse.fromJson(((response.data as Map<String, dynamic>)));
-    debugPrint('pollresponse is = ${pollingResponse}');
-    // if(pollingResponse.body.toString() == )
+
+    var reponsejson = response.data as Map<String, dynamic>;
+    debugPrint('the mint reesponse is ${reponsejson}');
+    if (reponsejson == null) {
+      emit(AllreadyPolledState());
+    }
+    var choicesMap = reponsejson['body'] as Map<String, dynamic>;
+    choicesMap.forEach((key, value) {
+      debugPrint('pollresponse was = $key');
+      debugPrint('pollresponse was is = $value');
+    });
+    emit(PolledState());
   }
 
   getPollsData() async {

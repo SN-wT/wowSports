@@ -24,11 +24,10 @@ class WalletScreen extends StatelessWidget {
     return BlocListener(
       bloc: cubit,
       listener: (context, state) {
-
         if (state is WalletScreenErrorState) {
           AppUtils.showSnackBar(state.error, context);
         }
-        if(state is WalletScreenLinkrefreshState){
+        if (state is WalletScreenLinkrefreshState) {
           debugPrint('showing snackbar for link connected ');
           AppUtils.showSnackBar("Public key linked", context);
         }
@@ -334,16 +333,17 @@ class LayOut extends StatelessWidget {
                                                                       AppButton(
                                                                     onPressed:
                                                                         () async {
-                                                                          Navigator.pop(context);
+                                                                      Navigator.pop(
+                                                                          context);
                                                                       cubit.pkey = cubit
                                                                           .puplickeytextcontroller
                                                                           .text;
                                                                       debugPrint(
                                                                           'the pkey is ${cubit.pkey}');
-                                                                      await cubit
-                                                                          .linkkey(
-                                                                              cubit.pkey, context);
-
+                                                                      await cubit.linkkey(
+                                                                          cubit
+                                                                              .pkey,
+                                                                          context);
                                                                     },
                                                                     child:
                                                                         const Text(
@@ -597,213 +597,260 @@ class LayOut extends StatelessWidget {
                               );
                             } else {
                               debugPrint('nftdata length is ${nftData.length}');
-                              return RefreshIndicator(
-                                onRefresh: cubit.init,
-                                child: GridView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: nftData.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 2.3 / 3),
-                                  itemBuilder: (context, index) => Stack(
-                                    children: [
-                                      Center(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: InkWell(
-                                            onTap: () {
-                                              debugPrint(
-                                                  'length is ${nftData.length}');
-                                              debugPrint(
-                                                  'length is ${nftData[index].specific}');
-                                              debugPrint(
-                                                  'length is ${nftData[index].target}');
-                                              debugPrint(
-                                                  'length is ${nftData[index].specific1}');
-                                              OwnedNfts ownedNfts = OwnedNfts();
-
-                                              // debugPrint('target image is ${nftData[index].target}');
-                                              ownedNfts = OwnedNfts.fromJson({
-                                                "metadata": {
-                                                  "image":
-                                                      nftData[index].url ?? '',
-                                                  //"animation_url": video,
-                                                  "specific": nftData[index]
-                                                              .specific ==
-                                                          "NA"
-                                                      ? null
-                                                      : nftData[index].specific,
-                                                  "specific1": nftData[index]
-                                                              .specific1 ==
-                                                          "NA"
-                                                      ? null
-                                                      : nftData[index]
-                                                          .specific1,
-                                                  "target":
-                                                      nftData[index].target ??
-                                                          "",
-                                                  "attributes": [
-                                                    {
-                                                      "value":
-                                                          nftData[index].type,
-                                                      "_id":
-                                                          "63a3f22287a884872f2eb594",
-                                                      "trait_type": "utility"
-                                                    },
-                                                    {
-                                                      "value": "faceswapimage",
-                                                      "_id":
-                                                          "63a3f22287a884872f2eb595",
-                                                      "trait_type": "utility"
-                                                    }
-                                                  ],
-                                                },
-                                              });
-                                              final args =
-                                                  NFTDetailArgs(ownedNfts);
-                                              Navigator.pushNamed(
-                                                context,
-                                                AppRoutes.nftDetail,
-                                                arguments: args,
-                                              );
-                                            },
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  color: AppColorResource
-                                                      .Color_F3F,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  shape: BoxShape.rectangle,
-                                                  border: Border.all(
-                                                      color: AppColorResource
-                                                          .Color_000)),
-                                              height: 300,
-                                              width: ((MediaQuery.of(context)
-                                                      .size
-                                                      .width) /
-                                                  1.8),
-                                              child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: CachedNetworkImage(
-                                                    placeholder:
-                                                        (context, url) =>
-                                                            const SizedBox(
-                                                      child: Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color:
-                                                              AppColorResource
-                                                                  .Color_FFF,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    fit: BoxFit.fill,
-                                                    imageUrl: nftData[index]
-                                                            .url
-                                                            .toString() ??
-                                                        "",
-                                                  )
-                                                  // 'https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2FMsDhoni.png?alt=media&token=87fa8ebe-fbd5-44b9-9db8-656ade5a7163'),
-                                                  ),
-                                            ),
-                                          ),
+                              return nftData.isEmpty
+                                  ? Container(
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'No NFTs found',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: AppColorResource.Color_000,
+                                          fontFamily: 'Nunito',
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w300,
                                         ),
+                                        textAlign: TextAlign.start,
                                       ),
-                                      Positioned.fill(
-                                          top: null,
-                                          child: Center(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                height: 60,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    1.8,
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      AppColorResource.Color_000
-                                                          .withOpacity(0.6),
-                                                  border: Border.all(
-                                                      color: AppColorResource
-                                                          .Color_000),
-                                                  // shape: BoxShape.rectangle,
-                                                  // borderRadius: BorderRadius.circular(8),
+                                    )
+                                  : RefreshIndicator(
+                                      onRefresh: cubit.init,
+                                      child: GridView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: nftData.length,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        gridDelegate:
+                                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 2,
+                                                childAspectRatio: 2.3 / 3),
+                                        itemBuilder: (context, index) => Stack(
+                                          children: [
+                                            Center(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    debugPrint(
+                                                        'length is ${nftData.length}');
+                                                    debugPrint(
+                                                        'length is ${nftData[index].specific}');
+                                                    debugPrint(
+                                                        'length is ${nftData[index].target}');
+                                                    debugPrint(
+                                                        'length is ${nftData[index].specific1}');
+                                                    OwnedNfts ownedNfts =
+                                                        OwnedNfts();
+
+                                                    // debugPrint('target image is ${nftData[index].target}');
+                                                    ownedNfts =
+                                                        OwnedNfts.fromJson({
+                                                      "metadata": {
+                                                        "image": nftData[index]
+                                                                .url ??
+                                                            '',
+                                                        //"animation_url": video,
+                                                        "specific": nftData[
+                                                                        index]
+                                                                    .specific ==
+                                                                "NA"
+                                                            ? null
+                                                            : nftData[index]
+                                                                .specific,
+                                                        "specific1": nftData[
+                                                                        index]
+                                                                    .specific1 ==
+                                                                "NA"
+                                                            ? nftData[index]
+                                                                .aRUrl
+                                                            : nftData[index]
+                                                                .specific1,
+                                                        "target": nftData[index]
+                                                                .target ??
+                                                            "",
+                                                        "attributes": [
+                                                          {
+                                                            "value":
+                                                                nftData[index]
+                                                                    .type,
+                                                            "_id":
+                                                                "63a3f22287a884872f2eb594",
+                                                            "trait_type":
+                                                                "utility"
+                                                          },
+                                                          {
+                                                            "value":
+                                                                "faceswapimage",
+                                                            "_id":
+                                                                "63a3f22287a884872f2eb595",
+                                                            "trait_type":
+                                                                "utility"
+                                                          }
+                                                        ],
+                                                      },
+                                                    });
+                                                    final args = NFTDetailArgs(
+                                                        ownedNfts);
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      AppRoutes.nftDetail,
+                                                      arguments: args,
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        color: AppColorResource
+                                                            .Color_F3F,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        shape:
+                                                            BoxShape.rectangle,
+                                                        border: Border.all(
+                                                            color:
+                                                                AppColorResource
+                                                                    .Color_000)),
+                                                    height: 300,
+                                                    width:
+                                                        ((MediaQuery.of(context)
+                                                                .size
+                                                                .width) /
+                                                            1.8),
+                                                    child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              const SizedBox(
+                                                            child: Center(
+                                                              child:
+                                                                  CircularProgressIndicator(
+                                                                color: AppColorResource
+                                                                    .Color_FFF,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          fit: BoxFit.fill,
+                                                          imageUrl: nftData[
+                                                                      index]
+                                                                  .url
+                                                                  .toString() ??
+                                                              "",
+                                                        )
+                                                        // 'https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/nftImages%2FMsDhoni.png?alt=media&token=87fa8ebe-fbd5-44b9-9db8-656ade5a7163'),
+                                                        ),
+                                                  ),
                                                 ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Column(
-                                                      children: [
-                                                        Container(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    8, 3, 0, 3),
-                                                            child: Text(
-                                                              'Name : ${nftData[index].name.toString() ?? ""}',
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: AppColorResource
-                                                                    .Color_FFF,
-                                                                fontFamily:
-                                                                    'Nunito',
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
+                                              ),
+                                            ),
+                                            Positioned.fill(
+                                                top: null,
+                                                child: Center(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      height: 60,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width /
+                                                              1.8,
+                                                      decoration: BoxDecoration(
+                                                        color: AppColorResource
+                                                                .Color_000
+                                                            .withOpacity(0.6),
+                                                        border: Border.all(
+                                                            color:
+                                                                AppColorResource
+                                                                    .Color_000),
+                                                        // shape: BoxShape.rectangle,
+                                                        // borderRadius: BorderRadius.circular(8),
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Column(
+                                                            children: [
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .fromLTRB(
+                                                                          8,
+                                                                          3,
+                                                                          0,
+                                                                          3),
+                                                                  child: Text(
+                                                                    'Name : ${nftData[index].name.toString() ?? ""}',
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: AppColorResource
+                                                                          .Color_FFF,
+                                                                      fontFamily:
+                                                                          'Nunito',
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                    ),
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    8, 3, 0, 3),
-                                                            child: Text(
-                                                              'Utility : ${nftData[index].utility == 'faceswap' ? 'Face swap' : 'AR Avatar'}',
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              style:
-                                                                  const TextStyle(
-                                                                color: AppColorResource
-                                                                    .Color_FFF,
-                                                                fontFamily:
-                                                                    'Nunito',
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                              Container(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                              .fromLTRB(
+                                                                          8,
+                                                                          3,
+                                                                          0,
+                                                                          3),
+                                                                  child: Text(
+                                                                    'Utility : ${nftData[index].utility == 'faceswap' ? 'Face swap' : 'AR Avatar'}',
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      color: AppColorResource
+                                                                          .Color_FFF,
+                                                                      fontFamily:
+                                                                          'Nunito',
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        /*
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              /*
                                                   Container(
                                                     alignment: Alignment.centerLeft,
                                                     child: const Padding(
@@ -828,20 +875,20 @@ class LayOut extends StatelessWidget {
                                                   ),
 
                                                    */
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                      ],
+                                                              const SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ))
-                                    ],
-                                  ),
-                                ),
-                              );
+                                                  ),
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                    );
                             }
                           })
                     ],

@@ -33,6 +33,10 @@ class PolingScreen extends StatelessWidget {
           if (state is LoginScreenErrorState) {
             AppUtils.showSnackBar(state.error, context);
           }
+          if (state is AllreadyPolledState) {
+            debugPrint('showing snackbar for link connected ');
+            AppUtils.showSnackBar("Already polled", context);
+          }
         },
         child: const _LayOut(),
       ),
@@ -51,8 +55,7 @@ class _LayOut extends StatelessWidget {
 
     return BlocBuilder<PolingScreenCubit, PolingScreenState>(
       bloc: cubit,
-      builder: (context, state) => (cubit.state is PolingScreenLoadingState ||
-              cubit.state is PolingScreenPoleRequestedState)
+      builder: (context, state) => (cubit.state is PolingScreenLoadingState)
           ? const Center(
               child: CircularProgressIndicator(
               color: AppColorResource.Color_1FFF,
@@ -142,7 +145,8 @@ class _LayOut extends StatelessWidget {
                                           onTap: () async {
                                             await cubit.request(
                                                 cubit.polls[index].choiceA,
-                                                cubit.questions[index]);
+                                                cubit.questions[index],
+                                                index);
                                           },
                                           child: Container(
                                             width: MediaQuery.of(context)
@@ -163,7 +167,12 @@ class _LayOut extends StatelessWidget {
                                                   const EdgeInsets.all(8.0),
                                               child: Center(
                                                 child: Text(
-                                                  cubit.polls[index].choiceA ??
+                                                  (cubit.state is PollingScreenPoleRequestedState &&
+                                                              cubit.pollingIndex ==
+                                                                  index
+                                                          ? "Loading..."
+                                                          : cubit.polls[index]
+                                                              .choiceA) ??
                                                       '',
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -187,7 +196,8 @@ class _LayOut extends StatelessWidget {
                                           onTap: () async {
                                             await cubit.request(
                                                 cubit.polls[index].choiceB,
-                                                cubit.questions[index]);
+                                                cubit.questions[index],
+                                                index);
                                           },
                                           child: Container(
                                             width: MediaQuery.of(context)
@@ -208,7 +218,12 @@ class _LayOut extends StatelessWidget {
                                                   const EdgeInsets.all(8.0),
                                               child: Center(
                                                 child: Text(
-                                                  cubit.polls[index].choiceB ??
+                                                  (cubit.state is PollingScreenPoleRequestedState &&
+                                                              cubit.pollingIndex ==
+                                                                  index
+                                                          ? "Loading..."
+                                                          : cubit.polls[index]
+                                                              .choiceB) ??
                                                       '',
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -232,7 +247,9 @@ class _LayOut extends StatelessWidget {
                                           onTap: () async {
                                             await cubit.request(
                                                 cubit.polls[index].choiceC,
-                                                cubit.questions[index]);
+                                                cubit.questions[index]
+                                                    .toString(),
+                                                index);
                                           },
                                           child: Container(
                                             width: MediaQuery.of(context)
@@ -253,7 +270,13 @@ class _LayOut extends StatelessWidget {
                                                   const EdgeInsets.all(8.0),
                                               child: Center(
                                                 child: Text(
-                                                  cubit.polls[index].choiceC,
+                                                  (cubit.state is PollingScreenPoleRequestedState &&
+                                                              cubit.pollingIndex ==
+                                                                  index
+                                                          ? "Loading..."
+                                                          : cubit.polls[index]
+                                                              .choiceC) ??
+                                                      '',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   style: const TextStyle(

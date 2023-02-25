@@ -19,6 +19,7 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
   var url = '';
   NFTClaimModel nftClaimModel;
   List<String> minted = [];
+  int mintingIndex;
   MintResponse mintResponse;
   var packName = '';
 
@@ -59,7 +60,8 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
   }
 
   mint(nftname, index, length) async {
-    emit(SettingsScreenMintRequestedState());
+    mintingIndex = index;
+    emit(SettingsScreenMintRequestedState(index));
     if (authenticationCubit.nftClaimModel == null) {
       await authenticationCubit.getMasterNFTClaim();
     }
@@ -105,9 +107,10 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
     emit(SettingsScreenMintedState());
     //  var response =  Dio().post();
   }
-
+/*
   check() async {
-    emit(SettingsScreenMintRequestedState());
+    mintingIndex =
+    emit(SettingsScreenMintRequestedState(in));
     if (nftClaimModel == null) {
       await authenticationCubit.getMasterNFTClaim();
     }
@@ -121,4 +124,6 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
     debugPrint('the mintcheck is ${mintCheck.value.toString()}');
     emit(SettingsScreenMintedState());
   }
+
+ */
 }
