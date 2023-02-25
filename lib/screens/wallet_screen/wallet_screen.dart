@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:walletutilityplugin/nft_detail/cubit/nft_detail_cubit.dart';
 import 'package:walletutilityplugin/nft_detail/model/alchemy_nft_response.dart';
@@ -97,19 +98,43 @@ class LayOut extends StatelessWidget {
                                   const SizedBox(
                                     height: 15,
                                   ),
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "Address : ${cubit.address}",
-                                      style: const TextStyle(
-                                          color: AppColorResource.Color_000,
-                                          fontFamily: 'Nunito',
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 16),
-                                    ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Address : ${cubit.address}",
+                                          style: const TextStyle(
+                                              color: AppColorResource.Color_000,
+                                              fontFamily: 'Nunito',
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Clipboard.setData(ClipboardData(
+                                                  text: cubit.address))
+                                              .then((_) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        "Wallet address copied to clipboard")));
+                                          });
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            Icons.copy,
+                                            size: 20,
+                                            color: AppColorResource.Color_000,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(
-                                    height: 13,
+                                    height: 10,
                                   ),
                                   //  FutureBuilder( future:  cubitAuth.balanceQuery() ,builder: );
                                   FutureBuilder(

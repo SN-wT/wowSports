@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,9 +45,14 @@ class PolingScreen extends StatelessWidget {
   }
 }
 
-class _LayOut extends StatelessWidget {
+class _LayOut extends StatefulWidget {
   const _LayOut({Key key}) : super(key: key);
 
+  @override
+  State<_LayOut> createState() => _LayOutState();
+}
+
+class _LayOutState extends State<_LayOut> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<PolingScreenCubit>();
@@ -55,260 +61,353 @@ class _LayOut extends StatelessWidget {
 
     return BlocBuilder<PolingScreenCubit, PolingScreenState>(
       bloc: cubit,
-      builder: (context, state) => (cubit.state is PolingScreenLoadingState)
+      builder: (context, state) =>
+      (cubit.state is PolingScreenLoadingState)
           ? const Center(
-              child: CircularProgressIndicator(
-              color: AppColorResource.Color_1FFF,
-            ))
+          child: CircularProgressIndicator(
+            color: AppColorResource.Color_1FFF,
+          ))
           : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const MyAppBar(
-                  appbartitle: 'Polls',
-                ),
-                Expanded(
-                    child: ListView(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GridView.builder(
-                        itemCount: cubit.pollsDetail.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 1, childAspectRatio: 2.5 / 3),
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 2,
-                            width: MediaQuery.of(context).size.width / 1.1,
-                            decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: AppColorResource.Color_000,
-                                    blurRadius: 3, // soften the shadow
-                                  )
-                                ],
-                                color: AppColorResource.Color_F3F,
-                                borderRadius: BorderRadius.circular(8),
-                                shape: BoxShape.rectangle,
-                                border: Border.all(
-                                    color: AppColorResource.Color_FFF)),
-                            child: Column(
-                              children: [
-                                Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: CachedNetworkImage(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1.7,
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                5,
-                                        placeholder: (context, url) =>
-                                            const SizedBox(
-                                              child: Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: AppColorResource
-                                                      .Color_FFF,
-                                                ),
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const MyAppBar(
+            appbartitle: 'Polls',
+          ),
+          Expanded(
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GridView.builder(
+                      itemCount: cubit.pollsDetail.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1, childAspectRatio: 2.5 / 3),
+                      itemBuilder: (context, index) =>
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 2,
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width / 1.1,
+                              decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: AppColorResource.Color_000,
+                                      blurRadius: 3, // soften the shadow
+                                    )
+                                  ],
+                                  color: AppColorResource.Color_F3F,
+                                  borderRadius: BorderRadius.circular(8),
+                                  shape: BoxShape.rectangle,
+                                  border: Border.all(
+                                      color: AppColorResource.Color_FFF)),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CachedNetworkImage(
+                                          width:
+                                          MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width /
+                                              1.7,
+                                          height:
+                                          MediaQuery
+                                              .of(context)
+                                              .size
+                                              .height /
+                                              5,
+                                          placeholder: (context, url) =>
+                                          const SizedBox(
+                                            child: Center(
+                                              child:
+                                              CircularProgressIndicator(
+                                                color: AppColorResource
+                                                    .Color_FFF,
                                               ),
                                             ),
-                                        fit: BoxFit.fill,
-                                        imageUrl: cubit.polls[index].pollURL
-                                                .toString() ??
-                                            "")),
-                                Center(
-                                  child: Text(
-                                    cubit.questions[index].toString(),
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: AppColorResource.Color_000,
-                                      fontFamily: 'Nunito',
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
+                                          ),
+                                          fit: BoxFit.fill,
+                                          imageUrl: cubit.polls[index].pollURL
+                                              .toString() ??
+                                              "")),
+                                  Center(
+                                    child: Text(
+                                      cubit.questions[index].toString(),
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: AppColorResource.Color_000,
+                                        fontFamily: 'Nunito',
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            await cubit.request(
-                                                cubit.polls[index].choiceA,
-                                                cubit.questions[index],
-                                                index);
-                                          },
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.5,
-                                            decoration: BoxDecoration(
-                                                color:
-                                                    AppColorResource.Color_F3F,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(
-                                                    color: AppColorResource
-                                                        .Color_0EA)),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Center(
-                                                child: Text(
-                                                  (cubit.state is PollingScreenPoleRequestedState &&
-                                                              cubit.pollingIndex ==
-                                                                  index
-                                                          ? "Loading..."
-                                                          : cubit.polls[index]
-                                                              .choiceA) ??
-                                                      '',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    color: AppColorResource
-                                                        .Color_000,
-                                                    fontFamily: 'Nunito',
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            await cubit.request(
-                                                cubit.polls[index].choiceB,
-                                                cubit.questions[index],
-                                                index);
-                                          },
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.5,
-                                            decoration: BoxDecoration(
-                                                color:
-                                                    AppColorResource.Color_F3F,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(
-                                                    color: AppColorResource
-                                                        .Color_0EA)),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Center(
-                                                child: Text(
-                                                  (cubit.state is PollingScreenPoleRequestedState &&
-                                                              cubit.pollingIndex ==
-                                                                  index
-                                                          ? "Loading..."
-                                                          : cubit.polls[index]
-                                                              .choiceB) ??
-                                                      '',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    color: AppColorResource
-                                                        .Color_000,
-                                                    fontFamily: 'Nunito',
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: InkWell(
-                                          onTap: () async {
-                                            await cubit.request(
-                                                cubit.polls[index].choiceC,
-                                                cubit.questions[index]
-                                                    .toString(),
-                                                index);
-                                          },
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                1.5,
-                                            decoration: BoxDecoration(
-                                                color:
-                                                    AppColorResource.Color_F3F,
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                shape: BoxShape.rectangle,
-                                                border: Border.all(
-                                                    color: AppColorResource
-                                                        .Color_0EA)),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Center(
-                                                child: Text(
-                                                  (cubit.state is PollingScreenPoleRequestedState &&
-                                                              cubit.pollingIndex ==
-                                                                  index
-                                                          ? "Loading..."
-                                                          : cubit.polls[index]
-                                                              .choiceC) ??
-                                                      '',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    color: AppColorResource
-                                                        .Color_000,
-                                                    fontFamily: 'Nunito',
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      )
-                                    ],
+                                  const SizedBox(
+                                    height: 5,
                                   ),
-                                )
-                              ],
+                                  /*
+
+
+                                 */
+
+                                  (cubit.state is PolledState &&
+                                      cubit.pollingIndex ==
+                                          index)
+                                      ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SizedBox(
+                                      height: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height /
+                                          6.5,
+                                      width:
+                                      MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width / 1.2,
+                                      child: DChartBar(
+                                        data: [
+                                          {
+                                            'id': 'Bar',
+                                            'data': [
+                                              {
+                                                'domain': cubit
+                                                    .choicesResponseMap.keys
+                                                    .toList()[0],
+                                                'measure': cubit
+                                                    .choicesResponseMap.values
+                                                    .toList()[0]
+                                              },
+                                              {
+                                                'domain': cubit
+                                                    .choicesResponseMap.keys
+                                                    .toList()[1],
+                                                'measure': cubit
+                                                    .choicesResponseMap.values
+                                                    .toList()[1]
+                                              },
+                                              {
+                                                'domain': cubit
+                                                    .choicesResponseMap.keys
+                                                    .toList()[2],
+                                                'measure': cubit
+                                                    .choicesResponseMap.values
+                                                    .toList()[2]
+                                              }
+                                            ],
+                                          },
+                                        ],
+                                        domainLabelPaddingToAxisLine: 16,
+                                        axisLineTick: 2,
+                                        axisLinePointTick: 2,
+                                        axisLinePointWidth: 10,
+                                        axisLineColor: AppColorResource
+                                            .Color_0EA,
+                                        measureLabelPaddingToAxisLine: 16,
+                                        verticalDirection: false,
+                                        barColor: (barData, index, id) =>
+                                        AppColorResource.Color_0EA,
+                                        showBarValue: true,
+                                      ),
+                                    ),
+                                  ) :
+                                  Container(
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await cubit.request(
+                                                  cubit.polls[index].choiceA,
+                                                  cubit.questions[index],
+                                                  index);
+                                            },
+                                            child: Container(
+                                              width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width /
+                                                  1.5,
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                  AppColorResource.Color_F3F,
+                                                  borderRadius:
+                                                  BorderRadius.circular(15),
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(
+                                                      color: AppColorResource
+                                                          .Color_0EA)),
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    (cubit
+                                                        .state is PollingScreenPoleRequestedState &&
+                                                        cubit.pollingIndex ==
+                                                            index
+                                                        ? "Loading..."
+                                                        : cubit.polls[index]
+                                                        .choiceA) ??
+                                                        '',
+                                                    overflow:
+                                                    TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontStyle: FontStyle
+                                                          .normal,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight
+                                                          .w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await cubit.request(
+                                                  cubit.polls[index].choiceB,
+                                                  cubit.questions[index],
+                                                  index);
+                                            },
+                                            child: Container(
+                                              width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width /
+                                                  1.5,
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                  AppColorResource.Color_F3F,
+                                                  borderRadius:
+                                                  BorderRadius.circular(15),
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(
+                                                      color: AppColorResource
+                                                          .Color_0EA)),
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    (cubit
+                                                        .state is PollingScreenPoleRequestedState &&
+                                                        cubit.pollingIndex ==
+                                                            index
+                                                        ? "Loading..."
+                                                        : cubit.polls[index]
+                                                        .choiceB) ??
+                                                        '',
+                                                    overflow:
+                                                    TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontStyle: FontStyle
+                                                          .normal,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight
+                                                          .w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await cubit.request(
+                                                  cubit.polls[index].choiceC,
+                                                  cubit.questions[index]
+                                                      .toString(),
+                                                  index);
+                                            },
+                                            child: Container(
+                                              width: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width /
+                                                  1.5,
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                  AppColorResource.Color_F3F,
+                                                  borderRadius:
+                                                  BorderRadius.circular(15),
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(
+                                                      color: AppColorResource
+                                                          .Color_0EA)),
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    (cubit
+                                                        .state is PollingScreenPoleRequestedState &&
+                                                        cubit.pollingIndex ==
+                                                            index
+                                                        ? "Loading..."
+                                                        : cubit.polls[index]
+                                                        .choiceC) ??
+                                                        '',
+                                                    overflow:
+                                                    TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontStyle: FontStyle
+                                                          .normal,
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight
+                                                          .w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    )
-                  ],
-                ))
-              ],
-            ),
+                    ),
+                  )
+                ],
+              ))
+        ],
+      ),
     );
   }
 }

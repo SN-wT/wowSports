@@ -61,7 +61,11 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
 
   mint(nftname, index, length) async {
     mintingIndex = index;
-    emit(SettingsScreenMintRequestedState(index));
+    emit(SettingsScreenMintRequestedState());
+    debugPrint('index was $index');
+    debugPrint('name was $nftname');
+    debugPrint('name was $mintingIndex');
+
     if (authenticationCubit.nftClaimModel == null) {
       await authenticationCubit.getMasterNFTClaim();
     }
@@ -105,7 +109,6 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
     }
 
     emit(SettingsScreenMintedState());
-    //  var response =  Dio().post();
   }
 /*
   check() async {

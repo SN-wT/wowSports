@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wowsports/screens/pooling_screen/poling_screen.dart';
 import 'package:wowsports/screens/settings_screen/settings_screen.dart';
 import 'package:wowsports/screens/tab/cubit/tab_screen_cubit.dart';
-import 'package:wowsports/screens/utility_screen/utility_screen.dart';
 import 'package:wowsports/screens/wallet_screen/wallet_screen.dart';
 import 'package:wowsports/utils/app_utils.dart';
 import 'package:wowsports/utils/color_resource.dart';
@@ -64,6 +63,7 @@ class _TabScreenState extends State<TabScreen> {
                   )),
               label: 'Wallet',
             ),
+            /*
             BottomNavigationBarItem(
               icon: Padding(
                   padding: EdgeInsets.all(3.0),
@@ -81,6 +81,8 @@ class _TabScreenState extends State<TabScreen> {
                   )),
               label: 'Feeds',
             ),
+
+             */
             BottomNavigationBarItem(
               icon: Padding(
                   padding: EdgeInsets.all(3.0),
@@ -139,10 +141,8 @@ class _Layout extends StatelessWidget {
       case 0:
         return const LayOut();
       case 1:
-        return const UtilityScreen();
-      case 2:
         return const SettingsScreen();
-      case 3:
+      case 2:
         return const PolingScreen();
       default:
         return Container();

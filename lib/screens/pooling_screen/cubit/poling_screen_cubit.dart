@@ -6,7 +6,6 @@ import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/screens/pooling_screen/cubit/poling_screen_state.dart';
 import 'package:wowsports/screens/pooling_screen/model/poll_detail_model.dart';
 import 'package:wowsports/screens/pooling_screen/model/polling_model/polling_model/polling_request_model.dart';
-import 'package:wowsports/screens/pooling_screen/model/polling_model/polling_model/polling_response_model.dart';
 
 class PolingScreenCubit extends Cubit<PolingScreenState> {
   AuthenticationCubitBloc authenticationCubit;
@@ -15,6 +14,7 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
   List<PollDetail> polls = [];
   List<String> questions = [];
   int pollingIndex;
+  Map<String, int> choicesResponseMap = {};
 
   PolingScreenCubit(this.authenticationCubit)
       : super(PolingScreenInitialState());
@@ -25,22 +25,16 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
     emit(PolingScreenLoadedState());
   }
 
-  Future<PollingResponse> request(chice, pollname, index) async {
+  Future<Map<String, int>> request(chice, pollname, index) async {
     pollingIndex = index;
     emit(PollingScreenPoleRequestedState());
     if (authenticationCubit.urlsModel == null) {
       await authenticationCubit.getMasterUrlsandtokens();
     }
     var uid = FirebaseAuth.instance.currentUser.uid;
-    debugPrint('the mint response is ${uid.toString()}');
-    debugPrint('the mint response is ${chice.toString()}');
-    debugPrint('the mint response is ${pollname.toString()}');
-    debugPrint(
-        'the mint response is ${authenticationCubit.urlsModel.pollrequest}');
-    debugPrint('the mint response is ${authenticationCubit.urlsModel.apikey}');
 
     PollingRequest pollingRequest =
-        PollingRequest(userId: uid, pollname: pollname, choice: chice);
+    PollingRequest(userId: uid, pollname: pollname, choice: chice);
     var response = (await Dio().post(
       authenticationCubit.urlsModel.pollrequest,
       options: Options(
@@ -58,11 +52,25 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
       emit(AllreadyPolledState());
     }
     var choicesMap = reponsejson['body'] as Map<String, dynamic>;
+    choicesResponseMap = {};
     choicesMap.forEach((key, value) {
+      choicesResponseMap[key] = int.parse(value);
       debugPrint('pollresponse was = $key');
       debugPrint('pollresponse was is = $value');
     });
+    if (choicesResponseMap.length != 3) {
+      if (!choicesResponseMap.keys.contains(polls[index].choiceA)) {
+        choicesResponseMap[polls[index].choiceA] = 0;
+      }
+      if (!choicesResponseMap.keys.contains(polls[index].choiceB)) {
+        choicesResponseMap[polls[index].choiceB] = 0;
+      }
+      if (!choicesResponseMap.keys.contains(polls[index].choiceC)) {
+        choicesResponseMap[polls[index].choiceC] = 0;
+      }
+    }
     emit(PolledState());
+    return choicesResponseMap;
   }
 
   getPollsData() async {

@@ -322,31 +322,21 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                                             ),
                                                                                           ),
                                                                                         ),
-                                                                                        (state is SettingsScreenMintRequestedState && cubit.mintingIndex == index)
-                                                                                            ? Column(
-                                                                                                children: const [
-                                                                                                  CircularProgressIndicator(
-                                                                                                    color: AppColorResource.Color_0EA,
-                                                                                                  )
-                                                                                                ],
-                                                                                              )
-                                                                                            : Padding(
-                                                                                                padding: const EdgeInsets.all(8.0),
-                                                                                                child: Center(
-                                                                                                  child: SizedBox(
-                                                                                                    width: (MediaQuery.of(context).size.width / (2.6)),
-                                                                                                    child: AppButton(
-                                                                                                      onPressed: () async {
-                                                                                                        Navigator.pop(context);
-                                                                                                        await cubit.mint(nftData[index].name ?? '', index, nftData.length);
-                                                                                                        //await cubit.check();
-
-                                                                                                        debugPrint('list items ${cubit.minted[index]}');
-                                                                                                      },
-                                                                                                      child: const Text('Buy NFT'),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                )),
+                                                                                        Padding(
+                                                                                            padding: const EdgeInsets.all(8.0),
+                                                                                            child: Center(
+                                                                                              child: SizedBox(
+                                                                                                width: (MediaQuery.of(context).size.width / (2.6)),
+                                                                                                child: AppButton(
+                                                                                                  onPressed: () async {
+                                                                                                    Navigator.pop(context);
+                                                                                                    await cubit.mint(nftData[index].name ?? '', index, nftData.length);
+                                                                                                    debugPrint('list items ${cubit.minted[index]}');
+                                                                                                  },
+                                                                                                  child: const Text('Buy NFT'),
+                                                                                                ),
+                                                                                              ),
+                                                                                            )),
                                                                                         const SizedBox(
                                                                                           height: 30,
                                                                                         ),
@@ -360,12 +350,15 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                         );
                                                                       },
                                                                       child:
-                                                                          const Text(
-                                                                        'Buy',
+                                                                          Text(
+                                                                        cubit.state is SettingsScreenMintRequestedState &&
+                                                                                cubit.mintingIndex == index
+                                                                            ? "Loading"
+                                                                            : 'Buy',
                                                                         overflow:
                                                                             TextOverflow.ellipsis,
                                                                         style:
-                                                                            TextStyle(
+                                                                            const TextStyle(
                                                                           color:
                                                                               AppColorResource.Color_FFF,
                                                                           fontFamily:
