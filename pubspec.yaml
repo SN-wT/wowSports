@@ -73,6 +73,7 @@ dependencies:
   polls: ^1.0.1
   shared_preferences: ^2.0.18
 
+
 dependency_overrides:
   fluttertoast: 8.1.2
   convert: ^3.0.1

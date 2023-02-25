@@ -53,6 +53,9 @@ class WalletScreenCubit extends BaseCubit<WalletScreenState> {
     debugPrint('the apikey is ${eventforapikey.snapshot.value.toString()}');
 
     address = await PreferenceHelper.getToken();
+    if (address == null && authenticationCubit.responseaddressis != null) {
+      address = authenticationCubit.responseaddressis;
+    }
     debugPrint("address is $address");
 
     emit(WalletScreenRefreshState());

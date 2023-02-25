@@ -111,6 +111,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
               responseaddressis = event.snapshot.value.toString());
           debugPrint(
               'the vaqlue notifier address is ${valueNotifier.value.toString()}');
+          addressvalue = valueNotifier.value.toString();
           await PreferenceHelper.saveAddress(responseaddressis.toString());
           addressvalue = await PreferenceHelper.getToken();
           debugPrint('pref address ${addressvalue}');
@@ -138,9 +139,11 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
 
     emit(AuthenticationAddreessReceivedState());
 
+    /*
     if (responseaddressis != null) {
       emit(AuthenticationAddreessReceivedState());
     }
+    */
   }
 
   Future<void> getMasterUrlsandtokens() async {
