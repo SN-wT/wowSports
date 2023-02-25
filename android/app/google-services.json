@@ -40,10 +40,10 @@
               "client_type": 3
             },
             {
-              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_id": "965871970667-jqkrv095qctd7u86usb2f58p9roboclb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.hackathon"
+                "bundle_id": "com.nft.wowsports"
               }
             }
           ]
@@ -76,10 +76,10 @@
               "client_type": 3
             },
             {
-              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_id": "965871970667-jqkrv095qctd7u86usb2f58p9roboclb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.hackathon"
+                "bundle_id": "com.nft.wowsports"
               }
             }
           ]
@@ -120,10 +120,10 @@
               "client_type": 3
             },
             {
-              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_id": "965871970667-jqkrv095qctd7u86usb2f58p9roboclb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.hackathon"
+                "bundle_id": "com.nft.wowsports"
               }
             }
           ]
@@ -138,6 +138,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "965871970667-04680287bk09c6b8k9pquvcqehgf7mp1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nft.wowsports",
+            "certificate_hash": "6db0841b2d4ec25c6acc6a0bf20207ba4cdd0c79"
+          }
+        },
+        {
+          "client_id": "965871970667-6fssv3q18pae6n4k9v92tod34jnikui3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nft.wowsports",
+            "certificate_hash": "5bee4ad383bfcf3a3388dccdc9feef33b28a5112"
+          }
+        },
         {
           "client_id": "965871970667-isvp35ibijbu0879208udhjvgq8gvitk.apps.googleusercontent.com",
           "client_type": 3
@@ -156,10 +172,10 @@
               "client_type": 3
             },
             {
-              "client_id": "965871970667-kq92j2unk6nrfspu35qjc8c78vemmqp6.apps.googleusercontent.com",
+              "client_id": "965871970667-jqkrv095qctd7u86usb2f58p9roboclb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.hackathon"
+                "bundle_id": "com.nft.wowsports"
               }
             }
           ]

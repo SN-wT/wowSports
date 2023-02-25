@@ -12,7 +12,8 @@ import 'package:wowsports/screens/pooling_screen/model/polling_model/polling_mod
 
 class PolingScreenCubit extends Cubit<PolingScreenState> {
   AuthenticationCubitBloc authenticationCubit;
-  var email;
+  String email;
+  Map<String, PollDetail> pollsDetail = {};
 
   PolingScreenCubit(this.authenticationCubit)
       : super(PolingScreenInitialState());
@@ -63,14 +64,15 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
     ));
     var responseMap = response.data as Map<String, dynamic>;
 
-    Map<String, PollDetail> pollsDetail = {};
-
     responseMap.forEach((key, value) {
       pollsDetail[key] = PollDetail.fromJson(value);
     });
 
     for (var element in pollsDetail.keys) {
       debugPrint('key is $element');
+
+      debugPrint('choice A is  is ${pollsDetail[element].pollURL}');
+
       debugPrint('choice A is  is ${pollsDetail[element].choiceA}');
     }
 

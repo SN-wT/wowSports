@@ -33,7 +33,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
   NFTDataResponse nftDataResponse;
   UserAddressResponse userAddressResponse;
   ValueNotifier valueNotifier = ValueNotifier(null);
-  ValueNotifier balanceNotifier = ValueNotifier(null);
+  ValueNotifier<double> balanceNotifier = ValueNotifier(0.0);
   NFTDataRequest nftDataRequest;
   UrlsModel urlsModel;
   List<NFTS> nftData = [];
@@ -112,6 +112,7 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
           await PreferenceHelper.saveAddress(responseaddressis.toString());
           addressvalue = await PreferenceHelper.getToken();
           debugPrint('pref address ${addressvalue}');
+          await balanceQuery(addressvalue);
         } else {
           UserAddressResponse userAddressResponse;
           var an = ValueNotifier(userAddressResponse =
@@ -120,44 +121,17 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
           valueNotifier = ValueNotifier(responseaddressis = an.value.body);
           debugPrint(
               'the vaqlue notifier address is78 ${valueNotifier.value.toString()}');
+          await balanceQuery(valueNotifier.value.toString());
+
           await PreferenceHelper.saveAddress(valueNotifier.value.toString());
         }
       });
       addressvalue = await PreferenceHelper.getToken();
       debugPrint('pref address 567 ${addressvalue}');
-      FlowClient flowClient =
-          FlowClient('access.devnet.nodes.onflow.org', 9000);
-
-      try {
-        var address = await PreferenceHelper.getToken();
-        debugPrint('address for flow client${address.toString()}');
-        debugPrint('address for flow client${responseaddressis.toString()}');
-        debugPrint('address for flow client${addressvalue.toString()}');
-
-        //var abcd = flowClient.accessClient.sendTransaction()
-        // var height = await flowClient.getBlockHeight();
-        balanceNotifier = ValueNotifier(balance = await flowClient
-            .getAccountBalance(addressvalue.toString().substring(2)));
-        // var app = await flowClient.getAccount("547f177b243b4d80");
-        var apps = flowClient.channel.createConnection();
-        //  debugPrint('address ${(app)} ');
-        debugPrint('balance123 ${(balance)} ');
-      } catch (ex) {
-        debugPrint('address was $ex');
-      }
     } else {
-      FlowClient flowClient =
-          FlowClient('access.devnet.nodes.onflow.org', 9000);
-      try {
-        valueNotifier = ValueNotifier(
-            responseaddressis = await PreferenceHelper.getToken());
-        debugPrint('address');
-        balanceNotifier = ValueNotifier(balance = await flowClient
-            .getAccountBalance(responseaddressis.toString().substring(2)));
-        debugPrint('balance ${(balance)} ');
-      } catch (ex) {
-        debugPrint('address was $ex');
-      }
+      responseaddressis = await PreferenceHelper.getToken();
+
+      await balanceQuery(responseaddressis);
     }
 
     emit(AuthenticationAddreessReceivedState());
@@ -177,6 +151,26 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
           jsonDecode(jsonEncode(value.value)) as Map<String, dynamic>);
       debugPrint(' urlsandtokens values ${urlsModel.toString()}');
     });
+  }
+
+  balanceQuery(address) async {
+    FlowClient flowClient = FlowClient('access.devnet.nodes.onflow.org', 9000);
+
+    try {
+      balance =
+          await flowClient.getAccountBalance(address.toString().substring(2));
+      double balanceInt = double.parse(balance);
+      balanceInt = balanceInt * 100;
+      debugPrint('balance123 ${(balanceInt)} ');
+      balanceNotifier = ValueNotifier<double>(balanceInt);
+      balanceNotifier.value = balanceInt;
+      balanceNotifier.notifyListeners();
+      //    balanceNotifier.value(balanceInt);
+      //  balanceNotifier.notifyListeners();
+      debugPrint('balance123 ${(balance)} ');
+    } catch (ex) {
+      debugPrint('address was $ex');
+    }
   }
 
   Future<void> loggedOut() async {

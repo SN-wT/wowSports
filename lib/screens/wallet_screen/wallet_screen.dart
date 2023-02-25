@@ -74,7 +74,6 @@ class WalletScreen extends StatelessWidget {
                                   ValueListenableBuilder(
                                       valueListenable: cubitAuth.valueNotifier,
                                       builder: (context, value, child) {
-                                        abcd = value;
                                         return Container(
                                           alignment: Alignment.centerLeft,
                                           child: Text(
@@ -91,22 +90,35 @@ class WalletScreen extends StatelessWidget {
                                   const SizedBox(
                                     height: 13,
                                   ),
+                                  //  FutureBuilder( future:  cubitAuth.balanceQuery() ,builder: );
                                   ValueListenableBuilder(
                                       valueListenable:
                                           cubitAuth.balanceNotifier,
                                       builder: (context, value, child) {
-                                        abcd = value;
+                                        debugPrint('updating value to $value');
                                         return Container(
                                           alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "Flow : ${value.toString()}",
-                                            style: const TextStyle(
-                                                color:
-                                                    AppColorResource.Color_000,
-                                                fontFamily: 'Nunito',
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 16),
-                                          ),
+                                          child: value.toString() != null
+                                              ? Text(
+                                                  "Flow : ${value.toString()}",
+                                                  style: const TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 16),
+                                                )
+                                              : const Text(
+                                                  "Loading",
+                                                  style: TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 16),
+                                                ),
                                         );
                                       }),
                                   const SizedBox(

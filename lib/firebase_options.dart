@@ -73,7 +73,7 @@ class DefaultFirebaseOptions {
     projectId: 'flowhackathon',
     databaseURL: 'https://flowhackathon-default-rtdb.firebaseio.com',
     storageBucket: 'flowhackathon.appspot.com',
-    androidClientId: '965871970667-punsdkljqm1090jh1l5g4op7vng3tal6.apps.googleusercontent.com',
+    androidClientId: '965871970667-04680287bk09c6b8k9pquvcqehgf7mp1.apps.googleusercontent.com',
     iosClientId: '965871970667-jqkrv095qctd7u86usb2f58p9roboclb.apps.googleusercontent.com',
     iosBundleId: 'com.nft.wowsports',
   );

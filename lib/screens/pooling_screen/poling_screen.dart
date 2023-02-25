@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:wowsports/screens/pooling_screen/cubit/poling_screen_state.dart'
 import 'package:wowsports/utils/app_utils.dart';
 import 'package:wowsports/utils/color_resource.dart';
 import 'package:wowsports/utils/theme.dart';
+import 'package:wowsports/widgets/button.dart';
 import 'package:wowsports/widgets/myappbar.dart';
 
 class PolingScreen extends StatelessWidget {
@@ -45,10 +45,6 @@ class _LayOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double option1 = 1.0;
-    double option2 = 0.0;
-    double option3 = 1.0;
-    double option4 = 1.0;
     final cubit = context.read<PolingScreenCubit>();
 
     final cubitAuth = context.read<AuthenticationCubitBloc>();
@@ -71,146 +67,201 @@ class _LayOut extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 1.1,
-                        decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: AppColorResource.Color_000,
-                                blurRadius: 3, // soften the shadow
-                              )
-                            ],
-                            color: AppColorResource.Color_F3F,
-                            borderRadius: BorderRadius.circular(8),
-                            shape: BoxShape.rectangle,
-                            border:
-                                Border.all(color: AppColorResource.Color_FFF)),
-                        child: Column(
-                          children: [
-                            Padding(
+                      child: InkWell(
+                        onTap: () async {
+                          await cubit.getPollsData();
+                        },
+                        child: FutureBuilder(
+                          future: cubit.getPollsData(),
+                          builder: (context, snapshot) => GridView.builder(
+                            itemCount: cubit.pollsDetail.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                    childAspectRatio: 2.5 / 3),
+                            itemBuilder: (context, index) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: CachedNetworkImage(
-                                  placeholder: (context, url) => const SizedBox(
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color: AppColorResource.Color_FFF,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 1.1,
+                                decoration: BoxDecoration(
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: AppColorResource.Color_000,
+                                        blurRadius: 3, // soften the shadow
+                                      )
+                                    ],
+                                    color: AppColorResource.Color_F3F,
+                                    borderRadius: BorderRadius.circular(8),
+                                    shape: BoxShape.rectangle,
+                                    border: Border.all(
+                                        color: AppColorResource.Color_FFF)),
+                                child: Column(
+                                  children: [
+                                    AppButton(
+                                      onPressed: () {},
+                                      child: Text(" jhbjhdc"
+                                          '${cubit.pollsDetail[cubit.pollsDetail.keys].pollURL ?? ""}'),
+                                    ),
+                                    /*
+                                          Padding(
+                                              padding: const EdgeInsets.all(
+                                                  8.0),
+                                              child: CachedNetworkImage(
+                                                  placeholder: (context, url) =>
+                                                  const SizedBox(
+                                                    child: Center(
+                                                      child:
+                                                      CircularProgressIndicator(
+                                                        color: AppColorResource
+                                                            .Color_FFF,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  fit: BoxFit.fill,
+                                                  imageUrl:
+                                                  cubit.pollsDetail[index]
+                                                      .pollURL.toString() ?? ""
+                                              )
                                           ),
-                                        ),
-                                      ),
-                                  fit: BoxFit.fill,
-                                  imageUrl:
-                                      "https://firebasestorage.googleapis.com/v0/b/flowhackathon.appspot.com/o/pollImages%2FNBA_Finals_(2023).png?alt=media&token=86a2fb99-3510-43d1-8536-23f8b4b16bef"),
-                            ),
-                            const Text(
-                              "If you like this ?",
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      decoration: BoxDecoration(
-                                          color: AppColorResource.Color_F3F,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          shape: BoxShape.rectangle,
-                                          border: Border.all(
-                                              color:
-                                                  AppColorResource.Color_0EA)),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: Text(
-                                            'choiceA',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: AppColorResource.Color_000,
-                                              fontFamily: 'Nunito',
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
+
+                                           */
+                                    const Text(
+                                      "If you like this ?",
+                                      style: TextStyle(fontSize: 24),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  1.5,
+                                              decoration: BoxDecoration(
+                                                  color: AppColorResource
+                                                      .Color_F3F,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(
+                                                      color: AppColorResource
+                                                          .Color_0EA)),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    'choiceA',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      decoration: BoxDecoration(
-                                          color: AppColorResource.Color_F3F,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          shape: BoxShape.rectangle,
-                                          border: Border.all(
-                                              color:
-                                                  AppColorResource.Color_0EA)),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: Text(
-                                            'choiceB',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: AppColorResource.Color_000,
-                                              fontFamily: 'Nunito',
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  1.5,
+                                              decoration: BoxDecoration(
+                                                  color: AppColorResource
+                                                      .Color_F3F,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(
+                                                      color: AppColorResource
+                                                          .Color_0EA)),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    'choiceB',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width /
-                                          1.5,
-                                      decoration: BoxDecoration(
-                                          color: AppColorResource.Color_F3F,
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          shape: BoxShape.rectangle,
-                                          border: Border.all(
-                                              color:
-                                                  AppColorResource.Color_0EA)),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Center(
-                                          child: Text(
-                                            'choiceC',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: AppColorResource.Color_000,
-                                              fontFamily: 'Nunito',
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  1.5,
+                                              decoration: BoxDecoration(
+                                                  color: AppColorResource
+                                                      .Color_F3F,
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  shape: BoxShape.rectangle,
+                                                  border: Border.all(
+                                                      color: AppColorResource
+                                                          .Color_0EA)),
+                                              child: const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Center(
+                                                  child: Text(
+                                                    'choiceC',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      color: AppColorResource
+                                                          .Color_000,
+                                                      fontFamily: 'Nunito',
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          const SizedBox(
+                                            height: 20,
+                                          )
+                                        ],
                                       ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            )
-                          ],
+                            ),
+                          ),
                         ),
                       ),
                     )
