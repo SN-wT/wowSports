@@ -103,7 +103,7 @@ class UtilityScreens extends StatelessWidget {
                     ),
                     AppButton(
                       onPressed: () async {
-                        // await cubit.account();
+                        await cubitAuth.loggedOut();
                       },
                       child: const Text(
                         'Face Swap Gif',

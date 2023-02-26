@@ -5,6 +5,7 @@ class UrlsModel {
   String getpollsdata;
   String linkrequest;
   String mintRequestUrl;
+  String pollcountrequest;
   String pollrequest;
 
   UrlsModel(
@@ -14,6 +15,7 @@ class UrlsModel {
       this.getpollsdata,
       this.linkrequest,
       this.mintRequestUrl,
+      this.pollcountrequest,
       this.pollrequest});
 
   UrlsModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class UrlsModel {
     getpollsdata = json['getpollsdata'];
     linkrequest = json['linkrequest'];
     mintRequestUrl = json['mintRequestUrl'];
+    pollcountrequest = json['pollcountrequest'];
     pollrequest = json['pollrequest'];
   }
 
@@ -34,6 +37,7 @@ class UrlsModel {
     data['getpollsdata'] = this.getpollsdata;
     data['linkrequest'] = this.linkrequest;
     data['mintRequestUrl'] = this.mintRequestUrl;
+    data['pollcountrequest'] = this.pollcountrequest;
     data['pollrequest'] = this.pollrequest;
     return data;
   }
