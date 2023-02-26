@@ -173,7 +173,27 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
 
   */
 
+
   Future<Map<String, int>> request(chice, pollname, index) async {
+
+
+
+
+    var auth = FirebaseAuth.instance.currentUser.uid;
+
+    var FBDBref = FirebaseDatabase.instance.ref("Master/Address/$auth/PollDetail");
+    var pollnameModified = pollname.toString().replaceAll(" ", "").replaceAll(".", "");
+    debugPrint('DB ref is ${FBDBref.toString()}');
+    debugPrint('DB ref Poll name is $pollname');
+    FBDBref.update({"$pollnameModified": "Polled"});
+
+    /*
+    await FirebaseDatabase.instance
+        .ref("Master/Address/$auth/PollDetail")
+        .update({"$pollname": "Polled"});
+
+     */
+    /*
     pollingIndex = index;
     debugPrint('the index $index and $pollname and $chice');
     emit(PollingScreenPoleRequestedState());
@@ -220,10 +240,13 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
     }
 
     var auth = FirebaseAuth.instance.currentUser.uid;
+    debugPrint();
     await FirebaseDatabase.instance
         .ref("Master/Address/$auth/PollDetail")
         .update({"$pollname": "Polled"});
     emit(PolledState());
+
+     */
     return choicesResponseMap;
   }
 

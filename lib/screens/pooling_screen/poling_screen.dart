@@ -84,7 +84,7 @@ class _LayOutState extends State<_LayOut> {
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate:
                       const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1, childAspectRatio: 2.5 / 3),
+                          crossAxisCount: 1, childAspectRatio: 2.36 / 3),
                       itemBuilder: (context, index) =>
                           Padding(
                             padding: const EdgeInsets.all(8.0),
