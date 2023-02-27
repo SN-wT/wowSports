@@ -9,9 +9,8 @@ class PostItem extends StatefulWidget {
   final String time;
   final String img;
   final String posttext;
-  final int likeCount;
-  final bool likedFlag;
-
+  int likeCount;
+  bool likedFlag;
 
   PostItem({
     Key key,
@@ -47,9 +46,7 @@ class _PostItemState extends State<PostItem> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           shape: BoxShape.rectangle,
-          color: AppColorResource
-              .Color_FFF
-              .withOpacity(0.6),
+          color: AppColorResource.Color_FFF.withOpacity(0.6),
           /*
               border: Border.all(
                   color:
@@ -69,14 +66,14 @@ class _PostItemState extends State<PostItem> {
                  */
               contentPadding: EdgeInsets.all(0),
               title: Text(
-                "${widget.address}",
-                style: TextStyle(
+                widget.address,
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               trailing: Text(
-                "${widget.time}",
-                style: TextStyle(
+                widget.time,
+                style: const TextStyle(
                   fontWeight: FontWeight.w300,
                   fontSize: 11,
                 ),
@@ -87,62 +84,85 @@ class _PostItemState extends State<PostItem> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 4.0),
                 child: Text(
-                  "${widget.posttext}",
-                  style: TextStyle(
+                  widget.posttext,
+                  style: const TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 15,
                   ),
                 ),
-              ),),
+              ),
+            ),
             Visibility(
                 visible: showImage,
                 child: CachedNetworkImage(
-                    width:
-                    MediaQuery
-                        .of(context)
-                        .size
-                        .width,
-                    height:
-                    MediaQuery
-                        .of(context)
-                        .size
-                        .height /
-                        3,
-                    placeholder: (context, url) =>
-                    const SizedBox(
-                      child: Center(
-                        child:
-                        CircularProgressIndicator(
-                          color: AppColorResource
-                              .Color_FFF,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 3,
+                    placeholder: (context, url) => const SizedBox(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: AppColorResource.Color_FFF,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                     fit: BoxFit.fill,
-                    imageUrl: widget.img ??
-                        "")),
+                    imageUrl: widget.img ?? "")),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child:
-                  //IconButton(onPressed: (){},icon:Icon(Icons.like),)
-
-
-                  LikeButton(likeCount: widget.likeCount,
-                      isLiked: widget.likedFlag,
-                      onTap: onLikeButtonTapped),
-
-
+                Row(
+                  children: [],
                 ),
+                /*
+                LikeButton(
+                    likeCount: widget.likeCount,
+                    isLiked: widget.likedFlag,
+                    onTap: onLikeButtonTapped),
+
+                 */
+/*
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LikeButton(
+                      likeCount: widget.likeCount,
+                      isLiked: widget.likedFlag,
+                      onTap: check()),
+                  */
+/*
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: widget.likedFlag
+                          ? null
+                          : () async {
+                              setState(() {
+                                debugPrint(" the count is ${widget.likeCount}");
+                                widget.likeCount += 1;
+                                debugPrint(
+                                    "the count is 3 ${widget.likeCount}");
+                                widget.likedFlag = true;
+                              });
+                            },
+                      icon: Icon(Icons.favorite_sharp,
+                          color: widget.likedFlag ? Colors.grey : Colors.red),
+                    ),
+                    Text("${widget.likeCount.toInt()}")
+                  ],
+                )
+
+ */
+
+                LikeButton(
+                    likeBuilder: (bool isLiked) {
+                      return check();
+                    },
+                    likeCount: widget.likeCount,
+                    isLiked: widget.likedFlag,
+                    onTap: onLikeButtonTapped),
               ],
             ),
-
           ],
         ),
       ),
-
     );
   }
 }
@@ -154,4 +174,8 @@ Future<bool> onLikeButtonTapped(bool isLiked) async {
   // return success? !isLiked:isLiked;
 
   return !isLiked;
+}
+
+check() {
+  debugPrint("like button tapped");
 }
