@@ -4,14 +4,14 @@ import 'package:walletutilityplugin/authentication/authentication_cubit.dart';
 import 'package:walletutilityplugin/nft_detail/cubit/nft_detail_cubit.dart';
 import 'package:walletutilityplugin/nft_detail/nft_detail_screen.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
+import 'package:wowsports/screens/feeds_screen/cubit/feeds_screen_cubit.dart';
 import 'package:wowsports/screens/login/cubit/login_screen_cubit.dart';
 import 'package:wowsports/screens/login/login_screen.dart';
 import 'package:wowsports/screens/pooling_screen/cubit/poling_screen_cubit.dart';
 import 'package:wowsports/screens/settings_screen/cubit/settings_screen_cubit.dart';
 import 'package:wowsports/screens/tab/cubit/tab_screen_cubit.dart';
 import 'package:wowsports/screens/tab/tab_screen.dart';
-import 'package:wowsports/screens/utility_screen/cubit/utility_screen_cubit.dart';
-import 'package:wowsports/screens/wallet_screen/cubit/wallet_screen_cubit.dart';
+ import 'package:wowsports/screens/wallet_screen/cubit/wallet_screen_cubit.dart';
 import 'package:wowsports/utils/color_resource.dart';
 
 import 'authentication/authentication_state.dart';
@@ -219,7 +219,7 @@ class PageBuilder {
         BlocProvider(create: (context) {
           final AuthenticationCubitBloc authenticationCubit =
           BlocProvider.of<AuthenticationCubitBloc>(context);
-          return UtilityScreenCubit(authenticationCubit)
+          return FeedsScreenCubit(authenticationCubit)
             ..init();
         }),
 
