@@ -5,14 +5,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
-import 'package:wowsports/screens/settings_screen/cubit/settings_screen_state.dart';
-import 'package:wowsports/screens/settings_screen/model/mint_NFT_nodel/mint_request.dart';
-import 'package:wowsports/screens/settings_screen/model/mint_NFT_nodel/mint_response_model.dart';
-import 'package:wowsports/screens/settings_screen/model/nftclaim_model/nftclaim_model.dart';
+import 'package:wowsports/screens/buy_screen/cubit/buy_screen_state.dart';
+import 'package:wowsports/screens/buy_screen/model/mint_NFT_nodel/mint_request.dart';
+import 'package:wowsports/screens/buy_screen/model/mint_NFT_nodel/mint_response_model.dart';
+import 'package:wowsports/screens/buy_screen/model/nftclaim_model/nftclaim_model.dart';
 import 'package:wowsports/utils/base_cubit.dart';
 import 'package:wowsports/utils/shared_preference.dart';
 
-class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
+class BuyScreenCubit extends BaseCubit<BuyScreenState> {
   final AuthenticationCubitBloc authenticationCubit;
   TextEditingController creditcardcontroller = TextEditingController();
   TextEditingController cvvcontroller = TextEditingController();
@@ -23,11 +23,10 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
   MintResponse mintResponse;
   var packName = '';
 
-  SettingsScreenCubit(this.authenticationCubit)
-      : super(SettingsScreenInitialState());
+  BuyScreenCubit(this.authenticationCubit) : super(BuyScreenInitialState());
 
   Future<void> init() async {
-    emit(SettingsScreenLoadingState());
+    emit(BuyScreenLoadingState());
     if (authenticationCubit.nftData.isEmpty) {
       await authenticationCubit.getMarketPlaceNFTs();
     }
@@ -54,14 +53,14 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
       }
     }
 
-    emit(SettingsScreenRefreshState());
+    emit(BuyScreenRefreshState());
 
 //above code for getting packname from db
   }
 
   mint(nftname, index, length) async {
     mintingIndex = index;
-    emit(SettingsScreenMintRequestedState());
+    emit(BuyScreenMintRequestedState());
     debugPrint('index was $index');
     debugPrint('name was $nftname');
     debugPrint('name was $mintingIndex');
@@ -108,7 +107,7 @@ class SettingsScreenCubit extends BaseCubit<SettingsScreenState> {
       minted[index] = "false";
     }
 
-    emit(SettingsScreenMintedState());
+    emit(BuyScreenMintedState());
   }
 /*
   check() async {

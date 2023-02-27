@@ -46,7 +46,9 @@ class LayOut extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = context.read<WalletScreenCubit>();
     final cubitAuth = context.read<AuthenticationCubitBloc>();
-    var abcd;
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return Scaffold(
         body: Column(
       children: [
@@ -73,7 +75,7 @@ class LayOut extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                                 border: Border.all(
                                     color: AppColorResource.Color_000),
-                                color: AppColorResource.Color_FFF),
+                                color: AppColorResource.Color_F3F),
                             child: ListTile(
                               title: Column(
                                 children: [

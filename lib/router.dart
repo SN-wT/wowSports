@@ -5,10 +5,10 @@ import 'package:walletutilityplugin/nft_detail/cubit/nft_detail_cubit.dart';
 import 'package:walletutilityplugin/nft_detail/nft_detail_screen.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/screens/feeds_screen/cubit/feeds_screen_cubit.dart';
+import 'package:wowsports/screens/buy_screen/cubit/buy_screen_cubit.dart';
 import 'package:wowsports/screens/login/cubit/login_screen_cubit.dart';
 import 'package:wowsports/screens/login/login_screen.dart';
 import 'package:wowsports/screens/pooling_screen/cubit/poling_screen_cubit.dart';
-import 'package:wowsports/screens/settings_screen/cubit/settings_screen_cubit.dart';
 import 'package:wowsports/screens/tab/cubit/tab_screen_cubit.dart';
 import 'package:wowsports/screens/tab/tab_screen.dart';
  import 'package:wowsports/screens/wallet_screen/cubit/wallet_screen_cubit.dart';
@@ -34,7 +34,7 @@ Route<dynamic> getRoutes(RouteSettings settings) {
       return _buildHomeScreen(settings);
     case AppRoutes.nftDetail:
       return _buildNftDetailScreen(settings);
-  /*
+    /*
     case AppRoutes.walletHome:
       return _buildHomeScreen(settings);
     case AppRoutes.utility:
@@ -59,9 +59,8 @@ MaterialPageRoute _buildHomeScreen(RouteSettings settings) {
 MaterialPageRoute _buildNftDetailScreen(RouteSettings settings) {
   return MaterialPageRoute(
     settings: const RouteSettings(name: AppRoutes.home),
-    builder: (context) =>
-        addAuth(
-            context, PageBuilder.buildNFTDetailScreen(settings), "NFT Detail"),
+    builder: (context) => addAuth(
+        context, PageBuilder.buildNFTDetailScreen(settings), "NFT Detail"),
   );
 }
 
@@ -76,7 +75,7 @@ MaterialPageRoute _buildLoginScreen() {
 Widget addAuth(BuildContext context, Widget widget, String callfrom) {
   debugPrint("memcheck : in addAuth $callfrom");
   final AuthenticationCubitBloc authenticationCubit =
-  BlocProvider.of<AuthenticationCubitBloc>(context);
+      BlocProvider.of<AuthenticationCubitBloc>(context);
 
   /*
   return StreamBuilder<ConnectivityResult>(
@@ -158,9 +157,8 @@ class PageBuilder {
     return BlocProvider(
       create: (context) {
         final AuthenticationCubitBloc authenticationCubit =
-        BlocProvider.of<AuthenticationCubitBloc>(context);
-        return LoginScreenCubit(authenticationCubit)
-          ..init();
+            BlocProvider.of<AuthenticationCubitBloc>(context);
+        return LoginScreenCubit(authenticationCubit)..init();
       },
       child: const LoginScreen(),
     );
@@ -170,16 +168,15 @@ class PageBuilder {
     return BlocProvider(
       create: (context) {
         final AuthenticationCubit authenticationCubit =
-        BlocProvider.of(context);
+            BlocProvider.of(context);
         final args = settings.arguments as NFTDetailArgs;
-        return NFTDetailCubit(authenticationCubit, args)
-          ..init();
+        return NFTDetailCubit(authenticationCubit, args)..init();
       },
       child: NFTDetailScreen(
-          appbarcolor: AppColorResource.Color_0EA,
+          appbarcolor: AppColorResource.Color_FFF,
           buttonbordercolor: AppColorResource.Color_0EA,
           buttontextcolor: AppColorResource.Color_FFF,
-          textcolor: AppColorResource.Color_FFF,
+          textcolor: AppColorResource.Color_000,
           buttoncolor: AppColorResource.Color_0EA,
           pagecolor: AppColorResource.Color_FFF),
     );
@@ -191,29 +188,25 @@ class PageBuilder {
         BlocProvider(
           create: (context) {
             final AuthenticationCubitBloc authenticationCubit =
-            BlocProvider.of<AuthenticationCubitBloc>(context);
+                BlocProvider.of<AuthenticationCubitBloc>(context);
             final args = settings.arguments as TabScreenArgs;
-            return TabScreenCubit(authenticationCubit, args)
-              ..init();
+            return TabScreenCubit(authenticationCubit, args)..init();
           },
         ),
         BlocProvider(create: (context) {
           final AuthenticationCubitBloc authenticationCubit =
-          BlocProvider.of<AuthenticationCubitBloc>(context);
-          return WalletScreenCubit(authenticationCubit)
-            ..init();
+              BlocProvider.of<AuthenticationCubitBloc>(context);
+          return WalletScreenCubit(authenticationCubit)..init();
         }),
         BlocProvider(create: (context) {
           final AuthenticationCubitBloc authenticationCubit =
-          BlocProvider.of<AuthenticationCubitBloc>(context);
-          return SettingsScreenCubit(authenticationCubit)
-            ..init();
+              BlocProvider.of<AuthenticationCubitBloc>(context);
+          return BuyScreenCubit(authenticationCubit)..init();
         }),
         BlocProvider(create: (context) {
           final AuthenticationCubitBloc authenticationCubit =
-          BlocProvider.of<AuthenticationCubitBloc>(context);
-          return PolingScreenCubit(authenticationCubit)
-            ..init();
+              BlocProvider.of<AuthenticationCubitBloc>(context);
+          return PolingScreenCubit(authenticationCubit)..init();
         }),
 
         BlocProvider(create: (context) {

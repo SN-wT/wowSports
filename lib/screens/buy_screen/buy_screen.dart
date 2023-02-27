@@ -6,26 +6,26 @@ import 'package:walletutilityplugin/nft_detail/cubit/nft_detail_cubit.dart';
 import 'package:walletutilityplugin/nft_detail/model/alchemy_nft_response.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/router.dart';
-import 'package:wowsports/screens/settings_screen/cubit/settings_screen_state.dart';
-import 'package:wowsports/screens/settings_screen/model/marketplace_model/nftresponse.dart';
+import 'package:wowsports/screens/buy_screen/cubit/buy_screen_state.dart';
 import 'package:wowsports/utils/app_utils.dart';
 import 'package:wowsports/utils/color_resource.dart';
 import 'package:wowsports/widgets/button.dart';
 import 'package:wowsports/widgets/myappbar.dart';
 
-import 'cubit/settings_screen_cubit.dart';
+import 'cubit/buy_screen_cubit.dart';
+import 'model/marketplace_model/nftresponse.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key key}) : super(key: key);
+class BuyScreen extends StatelessWidget {
+  const BuyScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<SettingsScreenCubit>();
+    final cubit = context.read<BuyScreenCubit>();
 
     return BlocListener(
       bloc: cubit,
       listener: (context, state) {
-        if (state is SettingsScreenErrorState) {
+        if (state is BuyScreenErrorState) {
           AppUtils.showSnackBar(state.error, context);
         }
       },
@@ -39,24 +39,24 @@ class SettingsScreenLayOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<SettingsScreenCubit>();
+    final cubit = context.read<BuyScreenCubit>();
     final cubitAuth = context.read<AuthenticationCubitBloc>();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    return BlocBuilder<SettingsScreenCubit, SettingsScreenState>(
+    return BlocBuilder<BuyScreenCubit, BuyScreenState>(
       bloc: cubit,
-      builder: (context, state) => (cubit.state is SettingsScreenLoadingState)
-          ? const Center(
-              child: CircularProgressIndicator(
-              color: AppColorResource.Color_1FFF,
-            ))
-          : Column(
-              children: [
-                const MyAppBar(
-                  appbartitle: 'Marketplace',
-                ),
-                Expanded(
+      builder: (context, state) => Column(
+        children: [
+          const MyAppBar(
+            appbartitle: 'Marketplace',
+          ),
+          (cubit.state is BuyScreenLoadingState)
+              ? const Center(
+                  child: CircularProgressIndicator(
+                  color: AppColorResource.Color_1FFF,
+                ))
+              : Expanded(
                   child: ListView(
                     children: [
                       FutureBuilder(
@@ -351,7 +351,7 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                       },
                                                                       child:
                                                                           Text(
-                                                                        cubit.state is SettingsScreenMintRequestedState &&
+                                                                        cubit.state is BuyScreenMintRequestedState &&
                                                                                 cubit.mintingIndex == index
                                                                             ? "Loading"
                                                                             : 'Buy',
@@ -483,8 +483,8 @@ class SettingsScreenLayOut extends StatelessWidget {
                     ],
                   ),
                 ),
-              ],
-            ),
+        ],
+      ),
 
       /*
                           Center(

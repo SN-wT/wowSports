@@ -36,20 +36,19 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
         'Pollresponse map returning ${crossrefchoicesResponseMap[index]} for $index');
     // return crossrefchoicesResponseMap[index];
 
-    if (polledLists.contains(questions[index])) {
+    if (polledLists
+        .contains(questions[index].replaceAll(" ", "").replaceAll(".", ""))) {
       PollCountRequestModel pollCountRequestModel =
-      PollCountRequestModel(pollname: questions[index]);
-      var response = (await Dio().post(
-          authenticationCubit.urlsModel.pollcountrequest,
-          options: Options(
-              headers: {
-                "x-api-key": authenticationCubit.urlsModel.apikey
-              },
-              followRedirects: false,
-              validateStatus: (status) {
-                return status < 500;
-              }),
-          data: pollCountRequestModel.toJson()));
+          PollCountRequestModel(pollname: questions[index]);
+      var response =
+          (await Dio().post(authenticationCubit.urlsModel.pollcountrequest,
+              options: Options(
+                  headers: {"x-api-key": authenticationCubit.urlsModel.apikey},
+                  followRedirects: false,
+                  validateStatus: (status) {
+                    return status < 500;
+                  }),
+              data: pollCountRequestModel.toJson()));
       var pollmap = response.data as Map<String, dynamic>;
       choicesResponseMap = {};
       pollmap.forEach((key, value) {
@@ -92,14 +91,17 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
     debugPrint('polled lists are 2 ${questions}');
     if (votteditems.value != null) {
       var pollsmap =
-      jsonDecode(jsonEncode(votteditems.value)) as Map<String, dynamic>;
+          jsonDecode(jsonEncode(votteditems.value)) as Map<String, dynamic>;
       debugPrint('polled lists are 3 $questions');
       pollsmap.forEach((key, value) async {
         for (var i = 0; i < questions.length; i++) {
-          debugPrint('polled lists are 5 ${questions[i]}');
-          debugPrint('polled lists are 6 $key');
+          debugPrint(
+              'polled lists are 5 ${questions[i].replaceAll(" ", "").replaceAll(".", "")}');
+          debugPrint(
+              'polled lists are 6 ${key.replaceAll(" ", "").replaceAll(".", "")}');
 
-          if (questions[i] == key) {
+          if (questions[i].replaceAll(" ", "").replaceAll(".", "") ==
+              key.replaceAll(" ", "").replaceAll(".", "")) {
             polledLists.add(key);
           }
         }
@@ -173,27 +175,7 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
 
   */
 
-
   Future<Map<String, int>> request(chice, pollname, index) async {
-
-
-
-
-    var auth = FirebaseAuth.instance.currentUser.uid;
-
-    var FBDBref = FirebaseDatabase.instance.ref("Master/Address/$auth/PollDetail");
-    var pollnameModified = pollname.toString().replaceAll(" ", "").replaceAll(".", "");
-    debugPrint('DB ref is ${FBDBref.toString()}');
-    debugPrint('DB ref Poll name is $pollname');
-    FBDBref.update({"$pollnameModified": "Polled"});
-
-    /*
-    await FirebaseDatabase.instance
-        .ref("Master/Address/$auth/PollDetail")
-        .update({"$pollname": "Polled"});
-
-     */
-    /*
     pollingIndex = index;
     debugPrint('the index $index and $pollname and $chice');
     emit(PollingScreenPoleRequestedState());
@@ -203,7 +185,7 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
     var uid = FirebaseAuth.instance.currentUser.uid;
 
     PollingRequest pollingRequest =
-    PollingRequest(userId: uid, pollname: pollname, choice: chice);
+        PollingRequest(userId: uid, pollname: pollname, choice: chice);
     var response = (await Dio().post(
       authenticationCubit.urlsModel.pollrequest,
       options: Options(
@@ -240,13 +222,13 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
     }
 
     var auth = FirebaseAuth.instance.currentUser.uid;
-    debugPrint();
+    var poll = pollname.replaceAll(" ", "").replaceAll(".", "");
+    polledLists.add(poll);
     await FirebaseDatabase.instance
         .ref("Master/Address/$auth/PollDetail")
-        .update({"$pollname": "Polled"});
+        .update({"$poll": "Polled"});
     emit(PolledState());
 
-     */
     return choicesResponseMap;
   }
 
@@ -266,8 +248,8 @@ class PolingScreenCubit extends Cubit<PolingScreenState> {
           }),
     ));
     var responseMap =
-    (jsonDecode(response.data.toString().replaceAll("\\", "")))
-    as Map<String, dynamic>;
+        (jsonDecode(response.data.toString().replaceAll("\\", "")))
+            as Map<String, dynamic>;
     debugPrint("response map $responseMap");
 
     responseMap.forEach((key, value) {

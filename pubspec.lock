@@ -1025,7 +1025,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.2.0"
   meta:
     dependency: transitive
     description:
@@ -1429,7 +1429,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.9.0"
+    version: "1.9.1"
   sprintf:
     dependency: transitive
     description:
@@ -1513,7 +1513,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.12"
+    version: "0.4.13"
   the_apple_sign_in:
     dependency: "direct main"
     description:
@@ -1618,7 +1618,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   video_player:
     dependency: transitive
     description:
@@ -1715,7 +1715,7 @@ packages:
     description:
       path: "."
       ref: flow
-      resolved-ref: b7bdc09929d1b1503a1c3c6fc23fadca3b5b7477
+      resolved-ref: "35f65e2e678eebdcea96c05cda64101abfb75b63"
       url: "https://github.com/SN-wT/wowTWalletUtilityPlugin.git"
     source: git
     version: "0.0.1"

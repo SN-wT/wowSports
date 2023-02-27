@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
@@ -27,6 +26,13 @@ class FeedsScreen extends StatelessWidget {
         },
         child: const FeedsScreens(),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColorResource.Color_0EA,
+        elevation: 5,
+        onPressed: () {},
+        child:
+            const Icon(Icons.edit, color: AppColorResource.Color_F3F, size: 30),
+      ),
     );
   }
 }
@@ -47,19 +53,19 @@ class FeedsScreens extends StatelessWidget {
             const MyAppBar(
               appbartitle: 'Feeds',
             ),
-            state is FeedsScreenLoadingState ? const Center(
-                child: CircularProgressIndicator(
-                  color: AppColorResource.Color_1FFF,
-                ))
+            state is FeedsScreenLoadingState
+                ? const Center(
+                    child: CircularProgressIndicator(
+                    color: AppColorResource.Color_1FFF,
+                  ))
                 : Expanded(
-              child:ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                itemCount: cubit.posts.length,
-                itemBuilder: (BuildContext context, int index) {
-
-                  PostItem postItem = cubit.posts[index];
-                  return postItem;
-                  /*
+                    child: ListView.builder(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: cubit.posts.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        PostItem postItem = cubit.posts[index];
+                        return postItem;
+                        /*
                   return PostItem(
                     img: post.img,
                     address: post.address,
@@ -68,10 +74,9 @@ class FeedsScreens extends StatelessWidget {
                   );
 
                    */
-                },
-              ),
-
-            ),
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

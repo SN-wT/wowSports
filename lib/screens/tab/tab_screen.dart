@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wowsports/screens/buy_screen/buy_screen.dart';
 import 'package:wowsports/screens/feeds_screen/feeds_screen.dart';
 import 'package:wowsports/screens/pooling_screen/poling_screen.dart';
-import 'package:wowsports/screens/settings_screen/settings_screen.dart';
 import 'package:wowsports/screens/tab/cubit/tab_screen_cubit.dart';
  import 'package:wowsports/screens/wallet_screen/wallet_screen.dart';
 import 'package:wowsports/utils/app_utils.dart';
@@ -141,7 +141,7 @@ class _Layout extends StatelessWidget {
       case 1:
         return const FeedsScreen();
       case 2:
-        return const SettingsScreen();
+        return const BuyScreen();
       case 3:
         return const PolingScreen();
       default:
