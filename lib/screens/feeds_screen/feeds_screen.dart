@@ -92,7 +92,14 @@ class FeedsScreen extends StatelessWidget {
                                               (4)),
                                       child: AppButton(
                                         onPressed: () async {
-                                          Navigator.pop(context);
+                                          if (cubit.postTextController.value.text != null && cubit.postTextController.value.text.length > 0) {
+                                            Navigator.pop(context);
+                                            cubit.createPost(context);
+                                          } else {
+
+                                            AppUtils.showSnackBar("Oops... Enter something to post!", context);
+                                          }
+
                                         },
                                         child: const Text('Post'),
                                       ),
@@ -120,15 +127,13 @@ class FeedsScreen extends StatelessWidget {
                                     hintText: "What's on your mind?",
                                     hintStyle: TextStyle(
                                         color: AppColorResource.Color_000),
-                                    prefixIcon: Icon(
-                                      Icons.abc_sharp,
-                                      size: 30,
-                                    )),
+                                   ),
                                 style: const TextStyle(
                                     color: AppColorResource.Color_000),
                                 controller: cubit.postTextController,
-                                onTap: () {},
-                                obscureText: true,
+                                onTap: () {
+                                },
+                                obscureText: false,
                               ),
                             ),
                           ), // this is for textfield

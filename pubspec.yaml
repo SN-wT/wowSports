@@ -74,6 +74,7 @@ dependencies:
   polls: ^1.0.1
   shared_preferences: ^2.0.18
   like_button: ^2.0.5
+  firebase_storage: ^11.0.14
 
 
 dependency_overrides:
