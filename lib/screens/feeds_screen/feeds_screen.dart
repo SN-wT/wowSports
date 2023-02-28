@@ -29,17 +29,12 @@ class FeedsScreen extends StatelessWidget {
             AppUtils.showSnackBar(state.error, context);
           }
           if (state is FeedsScreenUploadImageState) {
-
             AppUtils.showSnackBar("Uploading image...", context);
-
           }
 
           if (state is FeedsScreenSavingPostState) {
-
             AppUtils.showSnackBar("Saving your post...", context);
-
           }
-
         },
         child: const FeedsScreens(),
       ),
@@ -79,10 +74,14 @@ class FeedsScreens extends StatelessWidget {
               appbartitle: 'Feeds',
             ),
             state is FeedsScreenLoadingState
-                ? const Center(
-                    child: CircularProgressIndicator(
-                    color: AppColorResource.Color_1FFF,
-                  ))
+                ? const SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColorResource.Color_0EA,
+                      ),
+                    ),
+                  )
                 : Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -143,10 +142,13 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: const Icon(
-                        Icons.close,
-                        size: 23,
-                        color: AppColorResource.Color_000,
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 8, 8, 0),
+                        child: Icon(
+                          Icons.close,
+                          size: 30,
+                          color: AppColorResource.Color_000,
+                        ),
                       ),
                     )), //icon for close button
                 Container(

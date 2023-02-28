@@ -4,7 +4,7 @@ import 'package:wowsports/screens/buy_screen/buy_screen.dart';
 import 'package:wowsports/screens/feeds_screen/feeds_screen.dart';
 import 'package:wowsports/screens/pooling_screen/poling_screen.dart';
 import 'package:wowsports/screens/tab/cubit/tab_screen_cubit.dart';
- import 'package:wowsports/screens/wallet_screen/wallet_screen.dart';
+import 'package:wowsports/screens/wallet_screen/wallet_screen.dart';
 import 'package:wowsports/utils/app_utils.dart';
 import 'package:wowsports/utils/color_resource.dart';
 import 'package:wowsports/utils/theme.dart';
@@ -85,23 +85,6 @@ class _TabScreenState extends State<TabScreen> {
               icon: Padding(
                   padding: EdgeInsets.all(3.0),
                   child: Icon(
-                    Icons.business_center_outlined,
-                    size: 25,
-                    color: AppColorResource.Color_FFF,
-                  )),
-              activeIcon: Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Icon(
-                    Icons.business_center_outlined,
-                    size: 35,
-                    color: AppColorResource.Color_FFF,
-                  )),
-              label: 'Buy',
-            ),
-            BottomNavigationBarItem(
-              icon: Padding(
-                  padding: EdgeInsets.all(3.0),
-                  child: Icon(
                     Icons.how_to_vote_rounded,
                     size: 25,
                     color: AppColorResource.Color_FFF,
@@ -114,6 +97,23 @@ class _TabScreenState extends State<TabScreen> {
                     color: AppColorResource.Color_FFF,
                   )),
               label: 'Polls',
+            ),
+            BottomNavigationBarItem(
+              icon: Padding(
+                  padding: EdgeInsets.all(3.0),
+                  child: Icon(
+                    Icons.business_center_outlined,
+                    size: 25,
+                    color: AppColorResource.Color_FFF,
+                  )),
+              activeIcon: Padding(
+                  padding: EdgeInsets.all(3.0),
+                  child: Icon(
+                    Icons.business_center_outlined,
+                    size: 35,
+                    color: AppColorResource.Color_FFF,
+                  )),
+              label: 'Buy',
             ),
           ],
           currentIndex: cubit.tabIndex,
@@ -141,9 +141,9 @@ class _Layout extends StatelessWidget {
       case 1:
         return const FeedsScreen();
       case 2:
-        return const BuyScreen();
-      case 3:
         return const PolingScreen();
+      case 3:
+        return const BuyScreen();
       default:
         return Container();
     }

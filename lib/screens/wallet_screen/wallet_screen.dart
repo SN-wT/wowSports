@@ -59,10 +59,14 @@ class LayOut extends StatelessWidget {
             builder: (context, state) => (cubit.state
                         is WalletScreenInitialState ||
                     cubit.state is WalletScreenLoadingState)
-                ? const Center(
-                    child: CircularProgressIndicator(
-                    color: AppColorResource.Color_1FFF,
-                  ))
+                ? const SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColorResource.Color_0EA,
+                      ),
+                    ),
+                  )
                 : Expanded(
                     child: ListView(
                     children: [
@@ -223,11 +227,20 @@ class LayOut extends StatelessWidget {
                                                                         context);
                                                                   },
                                                                   child:
-                                                                      const Icon(
-                                                                    Icons.close,
-                                                                    size: 23,
-                                                                    color: AppColorResource
-                                                                        .Color_000,
+                                                                      const Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            0,
+                                                                            8,
+                                                                            8,
+                                                                            0),
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .close,
+                                                                      size: 30,
+                                                                      color: AppColorResource
+                                                                          .Color_000,
+                                                                    ),
                                                                   ),
                                                                 )),
                                                             Container(
@@ -281,7 +294,7 @@ class LayOut extends StatelessWidget {
                                                                             8.0),
                                                                 child: Center(
                                                                   child: Text(
-                                                                    "Stubbing with public key as use couldn't find a non-custodial mobile wallet sdk to integrate with",
+                                                                    "Stubbing with public key as we couldn't find a non-custodial mobile wallet sdk to integrate with",
                                                                     style:
                                                                         TextStyle(
                                                                       color: AppColorResource

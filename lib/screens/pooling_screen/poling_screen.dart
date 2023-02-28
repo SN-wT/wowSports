@@ -62,22 +62,25 @@ class _LayOutState extends State<_LayOut> {
     return BlocBuilder<PolingScreenCubit, PolingScreenState>(
       bloc: cubit,
       builder: (context, state) => Column(
-        // mainAxisAlignment: MainAxisAlignment.start,
+        //  mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const MyAppBar(
             appbartitle: 'Polls',
           ),
           (cubit.state is PolingScreenLoadingState)
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: AppColorResource.Color_0EA,
+              ? const SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColorResource.Color_0EA,
+                    ),
                   ),
                 )
               : Expanded(
                   child: ListView(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                       child: GridView.builder(
                         itemCount: cubit.pollsDetail.length,
                         shrinkWrap: true,
@@ -92,14 +95,14 @@ class _LayOutState extends State<_LayOut> {
                             width: MediaQuery.of(context).size.width / 1.1,
                             decoration: BoxDecoration(
                                 /*
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: AppColorResource.Color_000,
-                                    blurRadius: 1, // soften the shadow
-                                  )
-                                ],
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: AppColorResource.Color_000,
+                                      blurRadius: 1, // soften the shadow
+                                    )
+                                  ],
 
-                               */
+                                 */
                                 color: AppColorResource.Color_F3F,
                                 borderRadius: BorderRadius.circular(8),
                                 shape: BoxShape.rectangle,
@@ -147,20 +150,20 @@ class _LayOutState extends State<_LayOut> {
                                   height: 5,
                                 ),
                                 /*
-                                AppButton(
-                                  onPressed: () {
-                                    debugPrint(
-                                        'polllists are ${cubit.polledLists}');
-                                    debugPrint(
-                                        'polllists are ${cubit.questions[index]}');
-                                    cubit.polledLists
-                                            .contains(cubit.questions[index])
-                                        ? debugPrint('contains')
-                                        : debugPrint("not contains");
-                                  },
-                                  child: Text('hello'),
-                                )
-                              */
+                                  AppButton(
+                                    onPressed: () {
+                                      debugPrint(
+                                          'polllists are ${cubit.polledLists}');
+                                      debugPrint(
+                                          'polllists are ${cubit.questions[index]}');
+                                      cubit.polledLists
+                                              .contains(cubit.questions[index])
+                                          ? debugPrint('contains')
+                                          : debugPrint("not contains");
+                                    },
+                                    child: Text('hello'),
+                                  )
+                                */
                                 cubit.polledLists.contains(cubit
                                         .questions[index]
                                         .replaceAll(" ", "")

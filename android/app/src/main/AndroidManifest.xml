@@ -22,7 +22,7 @@
         <activity
             android:name=".AR3DModel"
             android:exported="false"
-            android:theme="@style/FullScreenTheme">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

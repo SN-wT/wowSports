@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
- import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
+import 'package:new_gradient_app_bar/new_gradient_app_bar.dart';
 import 'package:walletutilityplugin/wallet/appcolors.dart';
 import 'package:wowsports/utils/color_resource.dart';
 
@@ -11,6 +11,7 @@ class MyAppBar extends StatelessWidget {
   final TabBar tabbar;
   final List<Widget> action;
   final Color color;
+
   const MyAppBar(
       {Key key,
       this.appbar,
@@ -30,7 +31,7 @@ class MyAppBar extends StatelessWidget {
       systemOverlayStyle:
           const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
       flexibleSpace: Container(
-        height: 50,
+        height: 0,
       ),
       title: Center(
         child: Text(

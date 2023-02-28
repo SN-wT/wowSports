@@ -52,10 +52,14 @@ class SettingsScreenLayOut extends StatelessWidget {
             appbartitle: 'Marketplace',
           ),
           (cubit.state is BuyScreenLoadingState)
-              ? const Center(
-                  child: CircularProgressIndicator(
-                  color: AppColorResource.Color_1FFF,
-                ))
+              ? const SizedBox(
+                  height: 100,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColorResource.Color_0EA,
+                    ),
+                  ),
+                )
               : Expanded(
                   child: ListView(
                     children: [
@@ -241,10 +245,13 @@ class SettingsScreenLayOut extends StatelessWidget {
                                                                                               onTap: () {
                                                                                                 Navigator.pop(context);
                                                                                               },
-                                                                                              child: const Icon(
-                                                                                                Icons.close,
-                                                                                                size: 23,
-                                                                                                color: AppColorResource.Color_000,
+                                                                                              child: const Padding(
+                                                                                                padding: EdgeInsets.fromLTRB(0, 8, 8, 0),
+                                                                                                child: Icon(
+                                                                                                  Icons.close,
+                                                                                                  size: 30,
+                                                                                                  color: AppColorResource.Color_000,
+                                                                                                ),
                                                                                               ),
                                                                                             )),
                                                                                         Container(
