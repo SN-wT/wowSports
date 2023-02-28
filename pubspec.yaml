@@ -75,7 +75,8 @@ dependencies:
   shared_preferences: ^2.0.18
   like_button: ^2.0.5
   firebase_storage: ^11.0.14
-
+  image_picker: ^0.8.6+3
+  timeago_flutter: ^3.4.0
 
 dependency_overrides:
   fluttertoast: 8.1.2
@@ -84,6 +85,8 @@ dependency_overrides:
   build_runner: ^2.0.0
   image: ^4.0.15
   flutter_launcher_icons: ^0.11.0
+  intl: ^0.18.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -5,6 +5,7 @@ import 'package:wowsports/utils/color_resource.dart';
 
 class PostItem extends StatefulWidget {
   // final String dp;
+  final String postid;
   final String address;
   final String time;
   final String img;
@@ -15,6 +16,7 @@ class PostItem extends StatefulWidget {
   PostItem({
     Key key,
     // @required this.dp,
+    this.postid,
     @required this.address,
     @required this.time,
     @required this.posttext,
@@ -36,7 +38,7 @@ class _PostItemState extends State<PostItem> {
     if (widget.posttext == null) {
       showPost = false;
     }
-    if (widget.img == null) {
+    if (widget.img == null || widget.img == "") {
       showImage = false;
     }
 
