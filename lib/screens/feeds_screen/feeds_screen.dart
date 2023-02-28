@@ -59,6 +59,7 @@ class FeedsScreens extends StatelessWidget {
     return BlocBuilder<FeedsScreenCubit, FeedsScreenState>(
       bloc: cubit,
       builder: (context, state) => Container(
+        color: AppColorResource.Color_FFF,
         child: Column(
           children: [
             const MyAppBar(
@@ -95,7 +96,6 @@ class FeedsScreens extends StatelessWidget {
   }
 }
 
-
 class PostCreatorWidget extends StatefulWidget {
   const PostCreatorWidget({Key key}) : super(key: key);
 
@@ -107,6 +107,7 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
   String _pickedPath = null;
   File _image = null;
   bool showImage = false;
+
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<FeedsScreenCubit>();
@@ -163,16 +164,19 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
                         child: Center(
                           child: SizedBox(
                             height: 35,
-                            width:
-                            (MediaQuery.of(context).size.width /
-                                (4)),
+                            width: (MediaQuery.of(context).size.width / (4)),
                             child: AppButton(
                               onPressed: () async {
-                                if (cubit.postTextController.value.text != null && cubit.postTextController.value.text.length > 0) {
+                                if (cubit.postTextController.value.text !=
+                                        null &&
+                                    cubit.postTextController.value.text.length >
+                                        0) {
                                   Navigator.pop(context);
                                   cubit.createPost(context);
                                 } else {
-                                  AppUtils.showSnackBar("Oops... Enter something to post!", context);
+                                  AppUtils.showSnackBar(
+                                      "Oops... Enter something to post!",
+                                      context);
                                 }
                               },
                               child: const Text('Post'),
@@ -185,30 +189,28 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
-                    height:
-                    ((MediaQuery.of(context).size.height) / 5),
-                    width:
-                    (MediaQuery.of(context).size.width / (1.3)),
+                    height: ((MediaQuery.of(context).size.height) / 5),
+                    width: (MediaQuery.of(context).size.width / (1.3)),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: AppColorResource.Color_FFF,
-                        border: Border.all(
-                            color: AppColorResource.Color_000)),
+                        border: Border.all(color: AppColorResource.Color_000)),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
-                        cursorColor: AppColorResource.Color_FFF,
+                        cursorColor: AppColorResource.Color_0EA,
+                        cursorWidth: 4,
+                        cursorHeight: 15,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "What's your take on the latest in sport?",
-                          hintStyle: TextStyle(
-                              color: AppColorResource.Color_000),
+                          hintStyle:
+                              TextStyle(color: AppColorResource.Color_000),
                         ),
-                        style: const TextStyle(
-                            color: AppColorResource.Color_000),
+                        style:
+                            const TextStyle(color: AppColorResource.Color_000),
                         controller: cubit.postTextController,
-                        onTap: () {
-                        },
+                        onTap: () {},
                         obscureText: false,
                       ),
                     ),
@@ -221,9 +223,8 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
                       padding: const EdgeInsets.fromLTRB(0, 0, 15, 0),
                       child: IconButton(
                           onPressed: () async {
-
-                            var imagePicker = new ImagePicker();
-                         //   var _image;
+                            var imagePicker = ImagePicker();
+                            //   var _image;
                             var source = ImageSource.gallery;
                             XFile image = await imagePicker.pickImage(
                                 source: source,
@@ -240,8 +241,6 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
                                 showImage = true;
                               }
                             });
-
-
                           },
                           icon: const Icon(
                             Icons.photo,
@@ -251,18 +250,23 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
                     )
                   ],
                 ),
-                _image == null ? Container() : Visibility(
-                visible: showImage,
-                child: Center(
-                  child: Image.file(
-                    _image,
-                    width: 100.0,
-                    height: 100.0,
-                    fit: BoxFit.fill,
-                  ),
-                )),// this is for camera icon button
+                _image == null
+                    ? Container()
+                    : Visibility(
+                        visible: showImage,
+                        child: Center(
+                          child: Image.file(
+                            _image,
+                            width: 100.0,
+                            height: 100.0,
+                            fit: BoxFit.fill,
+                          ),
+                        )), // this is for camera icon button
                 // this is for camera icon button
-              SizedBox(height: 10,)],
+                const SizedBox(
+                  height: 10,
+                )
+              ],
             ),
           ),
         ],
@@ -270,4 +274,3 @@ class _PostCreatorWidgetState extends State<PostCreatorWidget> {
     );
   }
 }
-

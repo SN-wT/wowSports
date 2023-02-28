@@ -77,7 +77,6 @@ class AuthenticationCubitBloc extends BaseCubit<AuthenticationState> {
       }
 
       var uid = FirebaseAuth.instance.currentUser.uid;
-      var email = FirebaseAuth.instance.currentUser?.email;
       UserIDRequest userIDRequest = UserIDRequest(userId: uid);
       debugPrint('the response uid ${urlsModel.apikey}');
       debugPrint('the response uid ${urlsModel.addressRequestUrl}');

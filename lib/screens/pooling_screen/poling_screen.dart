@@ -91,12 +91,15 @@ class _LayOutState extends State<_LayOut> {
                             height: MediaQuery.of(context).size.height / 2,
                             width: MediaQuery.of(context).size.width / 1.1,
                             decoration: BoxDecoration(
+                                /*
                                 boxShadow: const [
                                   BoxShadow(
                                     color: AppColorResource.Color_000,
-                                    blurRadius: 3, // soften the shadow
+                                    blurRadius: 1, // soften the shadow
                                   )
                                 ],
+
+                               */
                                 color: AppColorResource.Color_F3F,
                                 borderRadius: BorderRadius.circular(8),
                                 shape: BoxShape.rectangle,

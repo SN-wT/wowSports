@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
 import 'package:wowsports/utils/color_resource.dart';
 
 class PostItem extends StatefulWidget {
@@ -43,12 +42,12 @@ class _PostItemState extends State<PostItem> {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           shape: BoxShape.rectangle,
-          color: AppColorResource.Color_FFF.withOpacity(0.6),
+          color: AppColorResource.Color_F3F.withOpacity(0.6),
           /*
               border: Border.all(
                   color:
@@ -129,11 +128,11 @@ class _PostItemState extends State<PostItem> {
                       isLiked: widget.likedFlag,
                       onTap: check()),
                   */
-/*
+
                 Row(
                   children: [
                     IconButton(
-                      onPressed: widget.likedFlag
+                      onPressed: widget.likedFlag == true
                           ? null
                           : () async {
                               setState(() {
@@ -145,21 +144,28 @@ class _PostItemState extends State<PostItem> {
                               });
                             },
                       icon: Icon(Icons.favorite_sharp,
-                          color: widget.likedFlag ? Colors.grey : Colors.red),
+                          color: widget.likedFlag == false
+                              ? Colors.grey
+                              : Colors.red),
                     ),
                     Text("${widget.likeCount.toInt()}")
                   ],
                 )
 
- */
-
+/*
                 LikeButton(
-                    likeBuilder: (bool isLiked) {
-                      return check();
-                    },
-                    likeCount: widget.likeCount,
-                    isLiked: widget.likedFlag,
-                    onTap: onLikeButtonTapped),
+                  likeBuilder: (bool isLiked) {
+                    return check();
+                  },
+                  likeCount: widget.likeCount,
+                  isLiked: widget.likedFlag,
+                  onTap: (isLiked) {
+                    onLikeButtonTapped;
+                    check();
+                  },
+                ),
+
+ */
               ],
             ),
           ],
@@ -174,7 +180,7 @@ Future<bool> onLikeButtonTapped(bool isLiked) async {
   // final bool success= await sendRequest();
   /// if failed, you can do nothing
   // return success? !isLiked:isLiked;
-
+  check();
   return !isLiked;
 }
 

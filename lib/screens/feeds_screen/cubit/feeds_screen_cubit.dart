@@ -34,7 +34,8 @@ class FeedsScreenCubit extends BaseCubit<FeedsScreenState> {
     if (authenticationCubit.urlsModel == null) {
       await authenticationCubit.getMasterUrlsandtokens();
     }
-    debugPrint('calling getPosts${authenticationCubit.urlsModel.getPosts} and ${ authenticationCubit.urlsModel.apikey} }');
+    debugPrint(
+        'calling getPosts${authenticationCubit.urlsModel.getPosts} and ${authenticationCubit.urlsModel.apikey} }');
     var getPostsResponse = (await Dio().getUri(
       Uri.parse(
         authenticationCubit.urlsModel.getPosts,
