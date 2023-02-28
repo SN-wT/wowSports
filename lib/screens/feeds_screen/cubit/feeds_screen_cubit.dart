@@ -8,9 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:wowsports/authentication/authentication_cubit.dart';
 import 'package:wowsports/screens/feeds_screen/model/create_post_model.dart';
 import 'package:wowsports/screens/feeds_screen/model/feeds_list_model.dart';
+import 'package:wowsports/screens/feeds_screen/model/reactions_update_model.dart';
 import 'package:wowsports/screens/feeds_screen/post_item.dart';
 import 'package:wowsports/utils/app_utils.dart';
 import 'package:wowsports/utils/base_cubit.dart';
+import 'package:wowsports/utils/shared_preference.dart';
 
 import 'feeds_screen_state.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -59,37 +61,36 @@ class FeedsScreenCubit extends BaseCubit<FeedsScreenState> {
       var getPostsResponseJson  = FeedsModel.fromJson(
           jsonDecode(jsonEncode(listofResponses[i] as Map<String, dynamic>)));
       DateTime tsdate = DateTime.fromMillisecondsSinceEpoch(int.parse(getPostsResponseJson.timestamp)*1000);
-      posts.add(PostItem(address: getPostsResponseJson.acct, time: timeago.format(tsdate), posttext: getPostsResponseJson.post, img: getPostsResponseJson.url, likeCount: int.parse(getPostsResponseJson.reactionCount), likedFlag: false,));
+      bool likedFlag = await PreferenceHelper.checkLikedPost(getPostsResponseJson.id);
+
+      posts.add(PostItem(postid: getPostsResponseJson.id,address: getPostsResponseJson.acct, time: timeago.format(tsdate), posttext: getPostsResponseJson.post, img: getPostsResponseJson.url, likeCount: int.parse(getPostsResponseJson.reactionCount), likedFlag: likedFlag, feedsCubit: this));
 
     }
 
     debugPrint('after serialization ');
 
-    /*
-    var postItem1 = PostItem(
-        address: "0x01",
-        time: "13:02",
-        posttext: "Looking forward to Following sports on wowSports",
-        likeCount: 10,
-        likedFlag: false,
-        img:
-            "https://thumbs.dreamstime.com/b/sport-collage-boxing-soccer-american-football-basketball-baseball-ice-hockey-etc-multi-professional-tennis-l-bascketball-players-93401905.jpg");
-    posts.add(postItem1);
-    debugPrint("text 1 is ${postItem1.posttext}");
-    var postItem2 = PostItem(
-        address: "0x02",
-        time: "2 days ago",
-        posttext: "Congrats to the Aussie team on the win",
-        likeCount: 500,
-        likedFlag: true,
-        img:
-            "https://img1.hscicdn.com/image/upload/f_auto,t_ds_w_1280,q_80/lsci/db/PICTURES/CMS/355200/355237.jpg");
-    posts.add(postItem2);
-    debugPrint("text 2 is ${postItem2.posttext}");
-
-     */
     return "Success";
   }
+
+  updatePostReactions(String postid) async {
+
+        debugPrint('liked for $postid');
+        await PreferenceHelper.saveLike(postid);
+        debugPrint('added to preference helper');
+        var reactionsUpdate = ReactionsUpdateModel(postid: postid);
+        var reactionsUpdateResponse = (await Dio().post(authenticationCubit.urlsModel.postReaction,
+            options: Options(
+                headers: {"x-api-key": authenticationCubit.urlsModel.apikey},
+                followRedirects: false,
+                validateStatus: (status) {
+                  return status < 500;
+                }),
+            data: reactionsUpdate.toJson()));
+
+        debugPrint('update response from request ${reactionsUpdateResponse.data}');
+
+
+    }
 
   Future<String> createPost(BuildContext context) async {
 

@@ -10,10 +10,10 @@ class PreferenceHelper {
     pref.setString("address", token);
   }
 
-  static Future saveLikeCount(int count) async {
+  static Future saveLike(String postid) async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    if (count == null) return;
-    pref.setInt("Likes", count);
+    if (postid == null) return;
+    pref.setBool(postid, true);
   }
 
   static Future clearStorage() async {
@@ -22,15 +22,15 @@ class PreferenceHelper {
     //await prefs.setBool("isSeen", true);
   }
 
-  static Future<int> getLikeCount() async {
-    int value;
+  static Future<bool> checkLikedPost(String postid) async {
+    bool value;
     final SharedPreferences pref = await SharedPreferences.getInstance();
     pref.reload();
-    value = pref.getInt("Likes");
-    if (value != null) {
-      return null;
-    } else {
+    value = pref.getBool(postid);
+    if (value != null && value) {
       return value;
+    } else {
+      return false;
     }
   }
 

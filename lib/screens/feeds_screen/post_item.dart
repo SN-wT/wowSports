@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wowsports/screens/feeds_screen/cubit/feeds_screen_cubit.dart';
 import 'package:wowsports/utils/color_resource.dart';
 
 class PostItem extends StatefulWidget {
@@ -9,6 +11,7 @@ class PostItem extends StatefulWidget {
   final String time;
   final String img;
   final String posttext;
+  final FeedsScreenCubit feedsCubit;
   int likeCount;
   bool likedFlag;
 
@@ -22,6 +25,7 @@ class PostItem extends StatefulWidget {
     this.img,
     this.likeCount,
     this.likedFlag,
+    this.feedsCubit,
   }) : super(key: key);
 
   @override
@@ -135,6 +139,7 @@ class _PostItemState extends State<PostItem> {
                       onPressed: widget.likedFlag == true
                           ? null
                           : () async {
+                              widget.feedsCubit.updatePostReactions(widget.postid);
                               setState(() {
                                 debugPrint(" the count is ${widget.likeCount}");
                                 widget.likeCount += 1;
@@ -173,17 +178,4 @@ class _PostItemState extends State<PostItem> {
       ),
     );
   }
-}
-
-Future<bool> onLikeButtonTapped(bool isLiked) async {
-  /// send your request here
-  // final bool success= await sendRequest();
-  /// if failed, you can do nothing
-  // return success? !isLiked:isLiked;
-  check();
-  return !isLiked;
-}
-
-check() {
-  debugPrint("like button tapped");
 }
