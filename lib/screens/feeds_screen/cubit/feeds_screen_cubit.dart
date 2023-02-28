@@ -93,11 +93,14 @@ class FeedsScreenCubit extends BaseCubit<FeedsScreenState> {
 
   Future<String> createPost(BuildContext context) async {
 
-    AppUtils.showSnackBar("Saving your post...", context);
+    AppUtils.showSnackBar("Processing...", context);
     debugPrint('make a post with ${postTextController.value.text}');
 
     var postCreator = CreatePost(userId: FirebaseAuth.instance.currentUser.uid,post: postTextController.value.text, url: "");
     if (pickedpath != null) {
+
+      emit(FeedsScreenUploadImageState());
+
       String uploadedFile = await uploadFiles(pickedpath);
       if (uploadedFile != null && uploadedFile != "Error") {
         postCreator.url = uploadedFile;
@@ -112,6 +115,8 @@ class FeedsScreenCubit extends BaseCubit<FeedsScreenState> {
       await authenticationCubit.getMasterUrlsandtokens();
     }
 
+    emit(FeedsScreenSavingPostState());
+
     var createPostResponse = (await Dio().post(authenticationCubit.urlsModel.createPost,
         options: Options(
             headers: {"x-api-key": authenticationCubit.urlsModel.apikey},
@@ -120,6 +125,8 @@ class FeedsScreenCubit extends BaseCubit<FeedsScreenState> {
               return status < 500;
             }),
         data: postCreator.toJson()));
+
+
 
     debugPrint("respones is ${createPostResponse.data.toString()}");
     if (createPostResponse != null && createPostResponse.toString().contains("Post created successfully")) {

@@ -24,9 +24,22 @@ class FeedsScreen extends StatelessWidget {
       body: BlocListener(
         bloc: cubit,
         listener: (context, state) {
+          debugPrint('Listener called with events ${state}');
           if (state is FeedsScreenErrorState) {
             AppUtils.showSnackBar(state.error, context);
           }
+          if (state is FeedsScreenUploadImageState) {
+
+            AppUtils.showSnackBar("Uploading image...", context);
+
+          }
+
+          if (state is FeedsScreenSavingPostState) {
+
+            AppUtils.showSnackBar("Saving your post...", context);
+
+          }
+
         },
         child: const FeedsScreens(),
       ),

@@ -7,6 +7,10 @@ class FeedsScreenInitialState extends FeedsScreenState {}
 
 class FeedsScreenLoadingState extends FeedsScreenState {}
 
+class FeedsScreenUploadImageState extends FeedsScreenState {}
+
+class FeedsScreenSavingPostState extends FeedsScreenState {}
+
 class FeedsScreenRefreshState extends FeedsScreenState {
   @override
   bool operator ==(Object other) => false;
